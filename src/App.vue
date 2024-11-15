@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="is-flex is-align-items-center is-justify-content-center" id="app">
     <LoginPage />
   </div>
 </template>
