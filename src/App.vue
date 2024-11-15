@@ -1,23 +1,20 @@
 <template>
   <div id="app">
-    <FirestoreExample />
-    <AuthExemple />
+    <LoginPage />
   </div>
-
 </template>
 
 <script>
-import FirestoreExample from './components/FirestoreExample.vue';
-import AuthExemple from './components/AuthExample.vue';
+import LoginPage from './components/LoginPage.vue';
 
 export default {
   name : "App",
-  component: {
-    FirestoreExample,
-    AuthExample,
+  components: {
+    LoginPage
   }
-};
+}
 </script>
+
 <style>
 /* Ajout des styles personnalisés ici si nécessaire*/
 </style>

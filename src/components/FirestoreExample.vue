@@ -1,3 +1,4 @@
+<!--
 <template>
   <div>
     <h1>Firestore Example</h1>
@@ -11,7 +12,7 @@
 
   import { ref, onMounted } from 'vue';
   import { collection, getDocs } from 'firebase/firestore';
-  import { db } from '../firebase.js'
+  import { db } from '../firebase.js';
 
   export default {
     name: 'FirestoreExample',
@@ -20,7 +21,7 @@
 
       const fetchItems = async () => {
         const QuerySnapshot = awaits getDocs(collection(db,'items'));
-        item.value = querySnapshot.docs.map(doc => ({ id, doc.id, ...doc.data() }))
+        item.value = querySnapshot.docs.map(doc => ({ id, doc.id, ...doc.data() }));
       };
 
       onMounted(() => {
@@ -34,3 +35,4 @@
   };
 
 </script>
+-->

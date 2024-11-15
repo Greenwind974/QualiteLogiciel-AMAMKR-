@@ -1,3 +1,4 @@
+<!--
 <template>
   <div>
     <h1>Authentification Example</h1>
@@ -20,7 +21,7 @@
 
   import { ref } from 'vue';
   import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
-  import { auth } from '../firebase.js'
+  import { auth } from '../firebase.js';
 
 export default {
   name: 'AuthExample',
@@ -50,3 +51,4 @@ export default {
   }
 }
 </script>
+-->
