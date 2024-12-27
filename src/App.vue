@@ -1,20 +1,27 @@
 <template>
   <div class="is-flex is-align-items-center is-justify-content-center" id="app">
-    <LoginPage />
+    <view-material />
   </div>
 </template>
 
 <script>
-import LoginPage from './components/LoginPage.vue';
+import ViewMaterial from './components/ViewMaterial.vue';
 
 export default {
   name : "App",
   components: {
-    LoginPage
+    ViewMaterial
   }
 }
 </script>
 
 <style>
 /* Ajout des styles personnalisés ici si nécessaire*/
+#app{
+  background-color: #f9f9f9;
+  height: 100vh;
+}
+
+
+
 </style>
