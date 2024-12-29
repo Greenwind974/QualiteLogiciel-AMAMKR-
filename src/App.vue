@@ -1,10 +1,9 @@
 <template>
-  <div class="is-flex is-align-items-center is-justify-content-center"  id="app">
+  <div id="app">
     <div id="header">
       <HeaderUi />
     </div>
-    <div id="belowFooter">
-
+    <div id="belowHeader">
       <div id="content">
         <view-material />
       </div>
@@ -55,12 +54,13 @@ export default {
   width: 100%;
 }
 
-#belowFooter{
+#belowHeader{
+  display: flex;
+  overflow: scroll;
   width: 100%;
   top: var(--tailleHeader);
   position: fixed;
   padding-top: 3vh;
-  display: flex;
 }
 
 #content {
