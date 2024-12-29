@@ -37,19 +37,24 @@
   width: inherit;
   display: flex;
   justify-content: space-evenly;
-  padding-inline: 1%;
+  padding: 1%;
+  font-size: 2.25vh;
 }
 
 .containerListe {
   color: black;
   align-items: center;
   width: inherit;
+  height: inherit;
+  overflow: scroll;
 }
 
 .container {
   display: inline-flex;
   align-items: center;
   color: black;
+  height: inherit;
+  width: inherit;
 }
 
 .container img{

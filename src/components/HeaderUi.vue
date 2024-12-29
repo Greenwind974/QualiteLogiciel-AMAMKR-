@@ -15,11 +15,13 @@
 
 <style scoped>
   .hozizontal {
+    position: inherit;
     height: inherit;
     width: inherit;
     display: flex;
     justify-content: space-between;
     padding-inline: 1%;
+    font-size: 3vh;
   }
 
   .droite {
@@ -30,8 +32,9 @@
   .container {
     display: inline-flex;
     align-items: center;
-    min-width: 0;
     color: black;
+    height: inherit;
+    width: inherit;
   }
 
   .container img{

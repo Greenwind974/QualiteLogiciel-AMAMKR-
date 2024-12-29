@@ -34,16 +34,13 @@ export default {
 :root{
   --tailleHeader : 10vh;
   --tailleFooter : 15vh;
-  --tailleBody : 75vh;
 }
 
 #app{
   background-color: #f9f9f9;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: relative;
+  min-height: 100vh;
+  min-width: 100vw;
 }
 
 #header {
@@ -75,6 +72,7 @@ export default {
   position: fixed;
   bottom: 0;
   width: 100%;
+  box-sizing: border-box;
 }
 
 
