@@ -14,9 +14,10 @@ const imagesource = ref("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACUC
 
 /*
 Ici on assigne aux constantes définies au dessus (dont les valeurs peuvent être changées, seul le lien au template est constant)
-les valeurs contenues dans la base de données
+les valeurs contenues dans la base de données, pour le matériel correspondant
+Ci dessous un exemple d'une ligne de code permettant de changer des élèments du template, ceux entourés de crochets {{}}
  */
-
+nom.value = "a"
 
 function reserver(){
 //Effctuer la réservation du matériel
@@ -26,17 +27,21 @@ function reserver(){
 
 <template>
 
+  <!--
+  Ci dessous le contenu à afficher
+  Pour chaque information importante sur le matériel considéré, une ligne
+  -->
   <div class="content">
     <!-- TODO - changer l'alt de l'image ci-dessous -->
     <img v-bind:src="imagesource" alt="template en attendant de stocker les images dans firebase">
-    <!--changer la couleur du h1 ne fonctionne pas correctement dans le tag "style", on le change plutôt ici-->
-    <h1 style="color: black">Nom du matériel : {{nom}} </h1>
+    <!--changer la couleur du h1 ne fonctionne pas correctement dans le tag "style" pour une raison inconnue, on le change plutôt ici-->
+    <h1 style="color: black">Nom du matériel :<br> {{nom}} </h1>
     <br>
-    <p>Marque du matériel : {{marque}}</p>
+    <p>Marque du matériel :<br> {{marque}}</p>
     <br>
-    <p>Version : {{version}}</p>
+    <p>Version :<br> {{version}}</p>
     <br>
-    <p>Commentaires : {{commentaires}}</p>
+    <p style="white-space: normal;">Commentaires :<br> {{commentaires}}</p>
     <br>
     <button class="button" @click="reserver">Réserver ce matériel</button>
   </div>
@@ -47,7 +52,9 @@ function reserver(){
   .content{
     color: black;
     background-color: #f9f9f9;
-    width: 100%;
+    width: inherit;
+    height: inherit;
+
   }
 
   .content button{

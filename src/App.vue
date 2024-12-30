@@ -1,15 +1,28 @@
 <template>
+  <!--
+  Le div app englobe la totalité de la page du navigateur
+  -->
   <div id="app">
+    <!--
+    Code html permettant d'afficher le header
+    NE PAS MODIFIER ICI
+    -->
     <div id="header">
       <HeaderUi />
     </div>
-    <div id="belowHeader">
-      <div id="content">
-        <view-material />
-      </div>
-      <div id="footer">
-        <FooterUi />
-      </div>
+    <!--
+    Code html permettant d'afficher le contenu principal
+    TODO Devra être modifié pour pouvoir afficher les différentes pages, à gérer aussi dans le script
+    -->
+    <div id="content">
+      <view-material />
+    </div>
+    <!--
+    Code html permettant d'afficher le footer
+    NE PAS MODIFIER ICI
+    -->
+    <div id="footer">
+      <FooterUi />
     </div>
   </div>
 </template>
@@ -30,12 +43,13 @@ export default {
 </script>
 
 <style>
-/* Ajout des styles personnalisés ici si nécessaire*/
+/* Variables permettant de modifier la taille du header et du footer */
 :root{
   --tailleHeader : 10vh;
   --tailleFooter : 15vh;
 }
 
+/* Code CSS permettant de faire englober la page par le div app */
 #app{
   background-color: #f9f9f9;
   position: relative;
@@ -43,6 +57,7 @@ export default {
   min-width: 100vw;
 }
 
+/* Code CSS permettant de faire s'afficher le header correctement */
 #header {
   height: var(--tailleHeader);
   background-color: lightgray;
@@ -51,28 +66,26 @@ export default {
   width: 100%;
 }
 
-#belowHeader{
-  display: flex;
+/* Code CSS permettant de gérer la zone contenant le contenu principal */
+#content {
+  /* Pouvoir scroller dans le contenu principal et éviter que le contenu dépasse de l'écran sur le côté droit*/
   overflow: scroll;
+  overflow-wrap: break-word;
+
   width: 100%;
   top: var(--tailleHeader);
+  bottom: var(--tailleFooter);
   position: fixed;
-  padding-top: 3vh;
+  padding: 10px;
 }
 
-#content {
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-}
-
+/* Code CSS permettant de faire s'afficher le footer correctement */
 #footer{
   height: var(--tailleFooter);
   background-color: lightgray;
   position: fixed;
   bottom: 0;
   width: 100%;
-  box-sizing: border-box;
 }
 
 
