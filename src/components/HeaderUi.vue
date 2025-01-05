@@ -88,6 +88,7 @@
   /* Code CSS permettant d'éviter qu'une image contenue dans le header en dépasse et se superpose au contenu principal */
   .container img{
     height: 100%;
+    margin-right: 1vw;
   }
 
 </style>
