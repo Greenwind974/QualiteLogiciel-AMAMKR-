@@ -15,7 +15,7 @@
     TODO Devra être modifié pour pouvoir afficher les différentes pages, à gérer aussi dans le script
     -->
     <div id="content">
-      <view-material />
+      <LoginPage />
     </div>
     <!--
     Code html permettant d'afficher le footer
@@ -28,16 +28,18 @@
 </template>
 
 <script>
-import ViewMaterial from './components/ViewMaterial.vue';
+//import ViewMaterial from './components/ViewMaterial.vue';
 import FooterUi from "@/components/FooterUi.vue";
 import HeaderUi from "@/components/HeaderUi.vue";
+import LoginPage from "@/components/LoginPage.vue";
 
 export default {
   name : "App",
   components: {
+    LoginPage,
     HeaderUi,
     FooterUi,
-    ViewMaterial
+    //ViewMaterial
   }
 }
 </script>
