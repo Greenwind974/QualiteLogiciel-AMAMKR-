@@ -49,6 +49,7 @@ export default {
 :root{
   --tailleHeader : 10vh;
   --tailleFooter : 15vh;
+  overflow: hidden;
 }
 
 /* Code CSS permettant de faire englober la page par le div app */
@@ -72,6 +73,7 @@ export default {
 #content {
   /* Pouvoir scroller dans le contenu principal et éviter que le contenu dépasse de l'écran sur le côté droit*/
   overflow: scroll;
+  overflow-x: hidden;
   overflow-wrap: break-word;
 
   width: 100%;
