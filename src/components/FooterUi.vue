@@ -95,8 +95,7 @@
 
   /* Si les éléments d'un container débordent lu footer, la ligne ci dessous permet de naviguer dans ces élèments au lieu de les faire disparaitre ou se superposer sur le contenu principal
    Il faut tout de même éviter de mettre trop d'élèments dans un container car même si cette solution fonctionne, cela nuit à l'ergonomie de la solution et affiche des barres de défilement partout
-   */
-  //overflow: scroll;
+   overflow: scroll;*/
 }
 
 /* Code CSS permettant d'éviter qu'une image contenue dans le footer en dépasse et se superpose au contenu principal */
