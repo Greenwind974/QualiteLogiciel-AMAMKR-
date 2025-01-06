@@ -1,16 +1,16 @@
 <template>
   <div class="is-flex is-align-items-center is-justify-content-center" id="app">
-    <LoginPage />
+    <router-view/>
   </div>
 </template>
 
 <script>
-import LoginPage from './components/LoginPage.vue';
+//import LoginPage from './components/LoginPage.vue';
+//import UserProfile from "@/components/UserProfile.vue";
 
 export default {
   name : "App",
   components: {
-    LoginPage
   }
 }
 </script>
