@@ -79,8 +79,10 @@
 
   /* Code CSS permettant de gérer les élèments contenus dans un container */
   .elements {
-    /* Si les éléments d'un container débordent lu header, permet de naviguer dans ces élèments au lieu de les faire disparaitre ou se superposer sur le contenu principal
-     Il faut tout de même éviter de mettre trop d'élèments dans un container car même si cette solution fonctionne, cela nuit à l'ergonomie de la solution
+    /* Pas nécéssaire de définir la taille des élèments */
+
+    /* Si les éléments d'un container débordent lu footer, la ligne ci dessous permet de naviguer dans ces élèments au lieu de les faire disparaitre ou se superposer sur le contenu principal
+     Il faut tout de même éviter de mettre trop d'élèments dans un container car même si cette solution fonctionne, cela nuit à l'ergonomie de la solution et affiche des barres de défilement partout
      */
     //overflow: scroll;
   }
