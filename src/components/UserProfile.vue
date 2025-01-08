@@ -16,39 +16,46 @@
     </div>
     <!-- Header Section -->
     <div class="profile-header">
-      <div class="cover-photo"></div>
+      <figure class="image is-4by3">
+        <img src="https://via.placeholder.com/1440x341" />
+      </figure>
       <div class="user-info">
         <div class="text-info">
-          <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
-          <p>Bonjour {{ user.FirstName }} !</p>
+          <h2 class="title has-text-centered">{{ user.FirstName }} {{ user.LastName }}</h2>
+          <p class="subtitle">Bonjour {{ user.FirstName }} !</p>
         </div>
       </div>
     </div>
 
     <!-- Profile Form -->
-    <div class="profile-form">
-      <h3>Informations personnelles</h3>
-      <form>
-        <div class="form-group">
-          <label for="firstName">Prénom</label>
-          <input id="firstName" type="text" v-model="user.FirstName" disabled />
+    <div class="columns is-centered is-vcentered">
+      <div class="column is-narrow">
+        <div class="box has-background" style="max-width: 450px; padding: 2rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+          <div style="max-width: 400px; margin: 0 auto; padding: 2rem;">
+            <h3 class="title has-text-centered">Informations personnelles</h3>
+            <form>
+              <div class="field form-group">
+                <label class="label" for="firstName">Prénom</label>
+                <input class="input" id="firstName" type="text" v-model="user.FirstName" disabled />
+              </div>
+              <div class="field form-group">
+                <label class="label" for="lastName">Nom</label>
+                <input class="input" id="lastName" type="text" v-model="user.LastName" disabled />
+              </div>
+              <div class="field form-group">
+                <label class="labe" for="email">Email</label>
+                <input class="input" id="email" type="email" v-model="user.Email" disabled />
+              </div>
+              <div class="field form-group">
+                <label class="label" for="department">Département</label>
+                <input class="input" id="department" type="text" v-model="user.Department" disabled />
+              </div>
+            </form>
+          </div>
+          <button @click="logout" class="button is-danger is-fullwidth mt-2 logout-button">Déconnexion</button>
         </div>
-        <div class="form-group">
-          <label for="lastName">Nom</label>
-          <input id="lastName" type="text" v-model="user.LastName" disabled />
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input id="email" type="email" v-model="user.Email" disabled />
-        </div>
-        <div class="form-group">
-          <label for="department">Département</label>
-          <input id="department" type="text" v-model="user.Department" disabled />
-        </div>
-      </form>
-
+      </div>
     </div>
-    <button @click="logout" class="logout-button">Déconnexion</button>
   </div>
 
   <div v-else>
@@ -105,25 +112,29 @@ html {
 }
 
 /* Header Section */
-.profile-header {
+/*.profile-header {
   position: relative;
   height: 300px;
-}
+}*/
 
-.cover-photo {
+/*.cover-photo {
   height: 200px;
   background: url("https://via.placeholder.com/1440x341") no-repeat center center;
   background-size: cover;
-}
+}*/
 
-.user-info {
+/*.user-info {
   position: absolute;
   bottom: -50px;
   left: 20px;
   display: flex;
   align-items: center;
 }
-
+*/
+.user-info{
+  margin: 1em;
+}
+/*
 .text-info h2 {
   margin: 0;
   font-size: 24px;
@@ -135,9 +146,10 @@ html {
   font-size: 18px;
   color: gray;
 }
+  */
 
 /* Profile Form */
-.profile-form {
+/*.profile-form {
   background: white;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -186,7 +198,7 @@ html {
 .logout-button:hover {
   background-color: #c9302c;
 }
-
+*/
 /* Sidebar */
 .sidebar {
   width: 250px;
