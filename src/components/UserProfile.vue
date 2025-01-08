@@ -112,93 +112,10 @@ html {
 }
 
 /* Header Section */
-/*.profile-header {
-  position: relative;
-  height: 300px;
-}*/
-
-/*.cover-photo {
-  height: 200px;
-  background: url("https://via.placeholder.com/1440x341") no-repeat center center;
-  background-size: cover;
-}*/
-
-/*.user-info {
-  position: absolute;
-  bottom: -50px;
-  left: 20px;
-  display: flex;
-  align-items: center;
-}
-*/
 .user-info{
   margin: 1em;
 }
-/*
-.text-info h2 {
-  margin: 0;
-  font-size: 24px;
-  font-weight: bold;
-}
 
-.text-info p {
-  margin: 5px 0 10px;
-  font-size: 18px;
-  color: gray;
-}
-  */
-
-/* Profile Form */
-/*.profile-form {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin: 60px auto;
-  padding: 20px;
-  max-width: 600px;
-}
-
-.profile-form h3 {
-  margin-bottom: 20px;
-  font-size: 20px;
-  color: #0056b3;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-.logout-button {
-  display: block;
-  margin: 20px auto;
-  background-color: #d9534f;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.logout-button:hover {
-  background-color: #c9302c;
-}
-*/
 /* Sidebar */
 .sidebar {
   width: 250px;
