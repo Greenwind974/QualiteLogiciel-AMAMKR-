@@ -28,3 +28,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ```
 npm install vuetify --save
 ```
+
+### For icons
+```
+npm install @mdi/font -D
+```
