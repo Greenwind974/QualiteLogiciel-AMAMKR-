@@ -6,6 +6,7 @@ import UserProfile from "@/components/UserProfile.vue";
 import SignupUserPage from "@/components/SignupUserPage.vue";
 import HomePage from "@/components/HomePage.vue";
 import ManageUserPage from "@/components/ManageUserPage.vue";
+import ChangePassword from "@/components/ChangePassword.vue";
 
 const routes = [
     { path: "/", name: "Login", component: LoginPage },
@@ -13,6 +14,7 @@ const routes = [
     { path: "/signup-user", name: "SignupUser", component: SignupUserPage },
     {path: "/home", name: "Home", component: HomePage},
     {path: "/manage-users", name: 'ManageUser', component: ManageUserPage},
+    {path: "/change-password", name: 'ChangePassword', component: ChangePassword}
 ];
 
 const router = createRouter({

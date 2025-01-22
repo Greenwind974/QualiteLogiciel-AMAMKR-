@@ -5,7 +5,7 @@ import {
     onAuthStateChanged
 } from "firebase/auth";
 import { auth, db} from "@/firebase";
-import {doc, setDoc, getDoc } from "firebase/firestore";
+import {doc, setDoc, getDoc, updateDoc} from "firebase/firestore";
 import router from "@/router/router";
 
 
@@ -42,22 +42,35 @@ export const observeAuthState = (callback) => {
 
 export const signInAndRedirect = async (email, password) => {
     try {
+        // Save user data
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
+        // Save user id
         const uid = userCredential.user.uid;
+        // Save reference of user
         const userRef = doc(db, "UTILISATEURS", uid); // Collection "UTILISATEURS"
         const userDoc = await getDoc(userRef);
+        // If reference exists
         if (userDoc.exists()) {
             console.log(userDoc.data())
-            // If firstConnection attribute of user is true
+            // If user is connected for the first time
             if (userDoc.data().FirstConnection === true) {
                 console.log("First connection true");
+                // Go to change-password page
+                router.push("/change-password");
+                // set FirstConnection to false
+                await updateDoc(userRef, {
+                    FirstConnection: false
+                });
+            // If user has been connected before
             } else {
                 console.log("First connection false");
+                // Go to home page
+                router.push("/home");
             }
+        // If reference does not exist
         } else {
             console.log("Rien");
         }
-        await router.push("/home");
     } catch (error) {
         console.error("Error during sign-in:", error);
         throw error;
