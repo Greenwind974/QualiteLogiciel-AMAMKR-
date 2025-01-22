@@ -5,8 +5,9 @@ import {
     onAuthStateChanged
 } from "firebase/auth";
 import { auth, db} from "@/firebase";
-import { doc, setDoc, getDoc } from "firebase/firestore";
-import router from "../router/router";
+import {doc, setDoc, getDoc } from "firebase/firestore";
+// import router from "@/router/router";
+
 
 export const addOrUpdateUser = async (uid, email, additionalData) => {
     const userRef = doc(db, "UTILISATEURS", uid); // Collection "UTILISATEURS"
@@ -19,6 +20,7 @@ export const addOrUpdateUser = async (uid, email, additionalData) => {
             Department: additionalData.department || "Non spécifié",
             Email: email,
             Role : additionalData.role || "No role ",
+            FirstConnection : additionalData.firstConnection || false,
             createdAt: new Date().toISOString(),
         });
     }
@@ -40,8 +42,22 @@ export const observeAuthState = (callback) => {
 
 export const signInAndRedirect = async (email, password) => {
     try {
-        await signInWithEmailAndPassword(auth, email, password);
-        router.push("/home");
+        const userCredential = await signInWithEmailAndPassword(auth, email, password)
+        const uid = userCredential.user.uid;
+        const userRef = doc(db, "UTILISATEURS", uid); // Collection "UTILISATEURS"
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+            console.log(userDoc.data())
+            // If firstConnection attribute of user is true
+            if (userDoc.data().FirstConnection === true) {
+                console.log("First connection true");
+            } else {
+                console.log("First connection false");
+            }
+        } else {
+            console.log("Rien");
+        }
+        // await router.push("/home");
     } catch (error) {
         console.error("Error during sign-in:", error);
         throw error;

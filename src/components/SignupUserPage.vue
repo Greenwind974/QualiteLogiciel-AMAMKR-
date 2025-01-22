@@ -64,6 +64,7 @@ export default {
       firstName: "",
       lastName: "",
       department: "",
+      firstConnection: true,
       role: "USER", // Rôle par défaut
     };
   },
@@ -74,6 +75,7 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
           department: this.department,
+          firstConnection: this.firstConnection,
           role: this.role,
         });
         const { uid } = userCredential.user;
@@ -81,6 +83,7 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
           department: this.department,
+          firstConnection: this.firstConnection,
           role: this.role,
         });
         alert("Utilisateur créé avec succès !");
