@@ -39,10 +39,10 @@
             <option value="Manutention">Manutention</option>
           </select>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label for="role">Role :</label>
           <input type="text" id="role" v-model="role" required />
-        </div>
+        </div>-->
         <button type="submit" class="btn-submit">Créer l'utilisateur</button>
       </form>
     </div>
