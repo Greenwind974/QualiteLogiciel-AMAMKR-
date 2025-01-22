@@ -6,7 +6,7 @@ import {
 } from "firebase/auth";
 import { auth, db} from "@/firebase";
 import {doc, setDoc, getDoc } from "firebase/firestore";
-// import router from "@/router/router";
+import router from "@/router/router";
 
 
 export const addOrUpdateUser = async (uid, email, additionalData) => {
@@ -57,7 +57,7 @@ export const signInAndRedirect = async (email, password) => {
         } else {
             console.log("Rien");
         }
-        // await router.push("/home");
+        await router.push("/home");
     } catch (error) {
         console.error("Error during sign-in:", error);
         throw error;
