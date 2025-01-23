@@ -5,8 +5,6 @@
 </template>
 
 <script>
-//import LoginPage from './components/LoginPage.vue';
-//import UserProfile from "@/components/UserProfile.vue";
 
 export default {
   name : "App",
@@ -16,5 +14,4 @@ export default {
 </script>
 
 <style>
-/* Ajout des styles personnalisés ici si nécessaire*/
 </style>
