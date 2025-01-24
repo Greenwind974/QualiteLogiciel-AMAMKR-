@@ -4,23 +4,42 @@ import {getAuth, updatePassword} from "firebase/auth";
 export default {
   data() {
     return {
-      showPassword: false,
-      showPassword2: false,
-      newPassword: "",
-      confirmPassword: ""
-    };
+      formData: {
+        showPassword: false,
+        showPassword2: false,
+        newPassword: "",
+        confirmPassword: ""
+      },
+      rules: {
+        minLength: (min) => (value) =>
+            (value && value.length >= min) || `Minimum ${min} caractères.`
+      },
+      passwordError: null,
+      passwordError2: null
+    }
+
   },
   methods: {
     // Show or hide eye button
     toggleShow() {
-      this.showPassword = !this.showPassword;
+      this.formData.showPassword = !this.formData.showPassword;
     },
     toggleShow2() {
-      this.showPassword2 = !this.showPassword2;
+      this.formData.showPassword2 = !this.formData.showPassword2;
     },
     // Verifiy the two password entries are the same
-    passwordsAreTheSame(firstPassword, secondPassword) {
-      return firstPassword === secondPassword;
+    passwordsAreTheSame(newPassword, confirmPassword) {
+      return newPassword === confirmPassword;
+    },
+    passwordRule() {
+      const rule = this.rules.minLength(6);
+      const result = rule(this.formData.newPassword);
+      this.passwordError = result === true ? null : result;
+    },
+    passwordRule2() {
+      const rule = this.rules.minLength(6);
+      const result = rule(this.formData.confirmPassword);
+      this.passwordError2 = result === true ? null : result;
     },
     // Changes the password
     async changePassword() {
@@ -29,10 +48,10 @@ export default {
         const auth = getAuth();
         const user = auth.currentUser;
         // If the two password entries are the same
-        if (this.passwordsAreTheSame(this.newPassword, this.confirmPassword)) {
+        if (this.passwordsAreTheSame(this.formData.newPassword, this.formData.confirmPassword)) {
           console.log("They're the same !");
           // Update password
-          await updatePassword(user, this.newPassword).then(() => {
+          await updatePassword(user, this.formData.newPassword).then(() => {
             // Update successful
             alert ("Mot de passe modifié avec succès !");
             // Redirect to home page
@@ -68,23 +87,26 @@ export default {
     <label for="password">Entrez votre nouveau mot de passe : </label>
     <div class="field has-addons">
       <div class="control is-expanded">
-        <input v-if="showPassword" type="text" id="password" v-model="newPassword" required>
-        <input v-else type="password" id="password" v-model="newPassword" required>
+        <input v-if="formData.showPassword" type="text" id="password" v-model="formData.newPassword" @input="passwordRule" required>
+        <input v-else-if="!formData.showPassword" type="password" id="password" v-model="formData.newPassword" @input="passwordRule" required>
+        <span v-if="passwordError" style="color: red">{{  passwordError }}</span>
       </div>
       <div class="control">
-        <v-btn v-if="showPassword" icon="mdi-eye-outline" class="button" @click="toggleShow" />
+        <v-btn v-if="formData.showPassword" icon="mdi-eye-outline" class="button" @click="toggleShow" />
         <v-btn v-else icon="mdi-eye-off-outline" class="button" @click="toggleShow" />
+        <span v-if="!rules.minLength(6)(formData.newPassword)">Minimum 6 caractères.</span>
       </div>
     </div>
     <br><br>
     <label for="confirm">Confirmez votre nouveau mot de passe : </label>
     <div class="field has-addons">
       <div class="control is-expanded">
-        <input v-if="showPassword2" type="text" id="confirm" v-model="confirmPassword" required>
-        <input v-else type="password" id="confirm" v-model="confirmPassword" required>
+        <input v-if="formData.showPassword2" type="text" id="confirm" v-model="formData.confirmPassword"  @input="passwordRule2" required>
+        <input v-else type="password" id="confirm" v-model="formData.confirmPassword"  @input="passwordRule2" required>
+        <span v-if="passwordError2" style="color: red">{{ passwordError2 }}</span>
       </div>
       <div class="control">
-        <v-btn v-if="showPassword2" icon="mdi-eye-outline" class="button" @click="toggleShow2" />
+        <v-btn v-if="formData.showPassword2" icon="mdi-eye-outline" class="button" @click="toggleShow2" />
         <v-btn v-else icon="mdi-eye-off-outline" class="button" @click="toggleShow2" />
       </div>
     </div>
@@ -123,7 +145,7 @@ p, label {
   color: #333;
 }
 
-input {
+input, v-btn {
   width: 100%;
   height: 100%;
   padding: 10px;
