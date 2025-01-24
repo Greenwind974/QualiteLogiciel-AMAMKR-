@@ -30,13 +30,27 @@ const validateUserData = (data) => {
     return errors.length > 0 ? errors : null;
 };
 
+const generateUniqueId = async (department) => {
+    const departmentTrigrams = {
+        "Informatique": "INF",
+        "Mecanique": "MEC",
+        "Manutention": "MAN",
+    };
+
+    const trigram = departmentTrigrams[department] || "UNK";
+    const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase(); // Random 4-character string
+    return `${trigram}${randomPart}`;
+};
+
 // Ajout ou mise à jour d'un utilisateur et de ces données
 export const addOrUpdateUser = async (uid, email, additionalData) => {
     const userRef = doc(db, "UTILISATEURS", uid); // Collection "UTILISATEURS"
     const userDoc = await getDoc(userRef);
 
     if (!userDoc.exists()) {
+        const uniqueId = await generateUniqueId(additionalData.department);
         await setDoc(userRef, {
+            ID : uniqueId,
             FirstName: additionalData.firstName || "Prénom inconnu",
             LastName: additionalData.lastName || "Nom inconnu",
             Department: additionalData.department || "Non spécifié",

@@ -37,6 +37,7 @@
         <table>
           <thead>
           <tr>
+            <th>Matricule</th>
             <th>Prénom</th>
             <th>Nom</th>
             <th>Email</th>
@@ -47,6 +48,7 @@
           </thead>
           <tbody>
           <tr v-for="user in users" :key="user.uid">
+            <td>{{ user.ID }}</td>
             <td>
               <input
                   type="text"
@@ -73,7 +75,7 @@
                   v-model="user.Department"
                   @change="updateUser(user.uid, 'Department', user.Department)">
                 <option value="Informatique">Informatique</option>
-                <option value="Mécanique">Mécanique</option>
+                <option value="Mecanique">Mécanique</option>
                 <option value="Manutention">Manutention</option>
               </select>
             </td>
