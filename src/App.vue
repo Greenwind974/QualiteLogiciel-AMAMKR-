@@ -27,7 +27,7 @@
           <v-list-item prepend-icon="mdi-folder" title="Matériels" value="materiels" to="/material"></v-list-item>
           <v-list-item prepend-icon="mdi-folder-edit" title="Gérer les Matériels" value="manage-materiels" to="/material/manage"></v-list-item>
           <v-list-item prepend-icon="mdi-account-multiple" title="Gérer les Utilisateurs" value="manage-users"  to="/manage-users"></v-list-item>
-          <v-list-item prepend-icon="mdi-star" title="Reservations" value="reservations" to="/material/new"></v-list-item>
+          <v-list-item prepend-icon="mdi-bookmark-multiple" title="Reservations" value="reservations" to="/reservations"></v-list-item>
         </v-list>
       </v-navigation-drawer>
       <v-main scrollable style="height: 100% ">

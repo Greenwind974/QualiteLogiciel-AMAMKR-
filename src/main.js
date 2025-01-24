@@ -12,12 +12,12 @@ import colors from 'vuetify/util/colors'
 import "@mdi/font/css/materialdesignicons.css"
 
 import { db, auth } from "./firebase.js";
-import {collection, getDocs} from "firebase/firestore";
 
 import router from "@/router/router";
-import {createStore} from "vuex";
 import UpdateMaterial from "@/components/Material/UpdateMaterial.vue";
 import CreateMaterial from "@/components/Material/CreateMaterial.vue";
+import DeleteMaterial from "@/components/Material/DeleteMaterial.vue";
+import BookMaterial from "@/components/Material/BookMaterial.vue";
 
 
 
@@ -60,81 +60,11 @@ const vuetify = createVuetify({
 
 app.use(vuetify)
 
-const store=createStore({
-    state : {
-        loadedMaterials:[
-            {
-                id:"lifhkbjzn",
-                nom:"Samsung S10",
-                num_telephone:"0123456789",
-                photo:'https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-s10-1.jpg',
-                reference:"AN123",
-                version:"V3.0",
-            },
-            {
-                id:"pojihujvg",
-                nom:"Samsung S2",
-                num_telephone:"0123456789",
-                photo:'https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-s10-1.jpg',
-                reference:"AN456",
-                version:"V3.0",
-            },
-            {
-                id:"mlkjhg",
-                nom:"Samsung S5",
-                num_telephone:"0123456789",
-                photo:'https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-s10-1.jpg',
-                reference:"AN789",
-                version:"V3.0",
-            }
-        ],
 
-
-
-    },
-    mutations: {
-        setLoadedMaterials(state, payload){
-            state.loadedMaterials = payload
-        }
-    },
-    actions:{
-
-        loadMaterials({commit}){
-            getDocs(collection(db,"MATERIELS")).then((data=>data.forEach((mat)=> {
-                const materials = []
-                const obj = mat.val()
-                for (let key in obj) {
-                    materials.push({
-                        id: key,
-                        nom: obj[key].nom,
-                        num_telephone: obj[key].num_telephone,
-                        photo: obj[key].photo,
-                        reference: obj[key].reference,
-                        version: obj[key].version
-                    })
-                }
-                commit('setLoadedMaterials', materials)
-            })));
-    },},
-    getters:{
-
-
-        loadedMaterials(state){
-            return state.loadedMaterials
-        },
-        loadedMaterial(state){
-            return (materialId)=>{
-                return state.loadedMaterials.find((material)=>{
-                    return material.id === materialId
-                })
-            }
-        }
-    }
-})
-
-app.use(store)
 
 app.component('UpdateMaterial',UpdateMaterial)
 app.component('CreateMaterial',CreateMaterial)
+app.component('DeleteMaterial', DeleteMaterial)
+app.component('BookMaterial',BookMaterial)
 
 app.mount('#app')

@@ -7,9 +7,8 @@ import SignupUserPage from "@/components/SignupUserPage.vue";
 import HomePage from "@/components/HomePage.vue";
 import ManageUserPage from "@/components/ManageUserPage.vue";
 import ManageMaterialPage from "@/components/Material/ManageMaterialPage.vue";
-import CreateMaterial from "@/components/Material/CreateMaterial.vue";
 import MaterialDisplayPage from "@/components/Material/MaterialDisplayPage.vue";
-import UpdateMaterial from "@/components/Material/UpdateMaterial.vue";
+import ReservationDisplayPage from "@/components/Reservation/ReservationDisplayPage.vue";
 
 const routes = [
     { path: "/", name: "Login", component: ManageMaterialPage },
@@ -18,9 +17,8 @@ const routes = [
     {path: "/home", name: "Home", component: HomePage},
     {path: "/manage-users", name: 'ManageUser', component: ManageUserPage},
     {path: "/material/manage", name: 'ManageMaterial', component: ManageMaterialPage},
-    {path: "/material/new", name :'CreateMaterial', component: CreateMaterial},
-    {path: "/material/update", name: 'UpdateMaterial', component: UpdateMaterial},
     {path: "/material", name: 'Material', component: MaterialDisplayPage},
+    {path: "/reservations", name: 'Reservations', component: ReservationDisplayPage}
 ];
 
 const router = createRouter({

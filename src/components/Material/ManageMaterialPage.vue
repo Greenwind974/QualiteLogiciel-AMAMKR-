@@ -7,19 +7,15 @@
       </v-col>
       <v-col>
         <template v-if="true"><CreateMaterial></CreateMaterial></template>
-
       </v-col>
-
-
     </v-layout>
-
   </v-container>
 
   <v-divider></v-divider>
   <v-container >
       <v-layout row wrap class="mb-2"
-                v-for="mat in materiels"
-                :key="mat.id">
+                v-for="mat in materiels.keys()"
+                :key="mat">
         <v-row justify="center">
           <v-card variant="flat"
                   color="secondary"
@@ -29,14 +25,15 @@
               <v-container>
                 <v-img width="10em"
                        contain
-                       :src="mat.photo">
+                       :src="this.materiels.get(mat).photo">
                 </v-img>
               </v-container>
               <v-container>
-                <v-card-title>{{mat.nom}}</v-card-title>
-                <v-card-subtitle>version : {{mat.version}}</v-card-subtitle>
-                <v-card-text>numéro : {{mat.num_telephone}}
-                  référence : {{mat.reference}}</v-card-text>
+                <v-card-title>{{this.materiels.get(mat).nom}}</v-card-title>
+                <v-card-subtitle>version : {{this.materiels.get(mat).version}}</v-card-subtitle>
+                <v-card-text>téléphone : {{this.materiels.get(mat).num_telephone}}
+                  <v-spacer></v-spacer>
+                  référence : {{this.materiels.get(mat).reference}}</v-card-text>
               </v-container>
               <v-divider vertical></v-divider>
               <v-container>
@@ -44,11 +41,12 @@
 
                   <v-col>
                     <v-row justify="space-around">
-                      <v-btn class="bouton" rounded="lg"  size="regular" color="primary" to="/material/update" ><v-icon>mdi-pencil</v-icon>Modifier</v-btn>
+                      <UpdateMaterial :mat-id=mat></UpdateMaterial>
                     </v-row>
+
                    <v-row justify="space-around">
-                     <v-btn class="bouton" rounded="lg"  size="regular"  color="warning" ><v-icon>mdi-delete</v-icon>Supprimer</v-btn>
-                   </v-row>
+                     <DeleteMaterial :materiel=mat></DeleteMaterial>
+                     </v-row>
                   </v-col>
                 </v-layout>
               </v-container>
@@ -66,11 +64,14 @@
 import {collection, query, addDoc, getDocs, doc, deleteDoc} from "firebase/firestore";
   import {db} from "@/firebase";
 import CreateMaterial from "@/components/Material/CreateMaterial.vue";
+import UpdateMaterial from "@/components/Material/UpdateMaterial.vue";
+import DeleteMaterial from "@/components/Material/DeleteMaterial.vue";
 
   export default {
-    components: {CreateMaterial},
+    components: {DeleteMaterial, UpdateMaterial, CreateMaterial},
     data(){
-      return { materiels:[]}
+      return { materiels: new Map()}
+
     },
     methods:{
       async createMaterial(){
@@ -88,8 +89,9 @@ import CreateMaterial from "@/components/Material/CreateMaterial.vue";
       async readMaterials(){
         const querySnap=await getDocs(query(collection(db, "MATERIELS")))
         querySnap.forEach((mat)=>{
-          this.materiels.push(mat.data())
+          this.materiels.set(mat.id,mat.data())
         })
+        console.log(this.materiels)
       },
       async dropMaterial(){
         await deleteDoc(doc(db, 'MATERIELS', 'VJwGVd962wipdRBMRMhD'))
