@@ -30,6 +30,7 @@ const validateUserData = (data) => {
     return errors.length > 0 ? errors : null;
 };
 
+// Générateur de Matricule
 const generateUniqueId = async (department) => {
     const departmentTrigrams = {
         "Informatique": "INF",
@@ -37,8 +38,8 @@ const generateUniqueId = async (department) => {
         "Manutention": "MAN",
     };
 
-    const trigram = departmentTrigrams[department] || "UNK";
-    const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase(); // Random 4-character string
+    const trigram = departmentTrigrams[department] || "UNK"; // Juste au cas ou
+    const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase(); // 4 nombre/lettres aléatoires
     return `${trigram}${randomPart}`;
 };
 
