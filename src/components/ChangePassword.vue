@@ -4,11 +4,20 @@ import {getAuth, updatePassword} from "firebase/auth";
 export default {
   data() {
     return {
+      showPassword: false,
+      showPassword2: false,
       newPassword: "",
       confirmPassword: ""
     };
   },
   methods: {
+    // Show or hide eye button
+    toggleShow() {
+      this.showPassword = !this.showPassword;
+    },
+    toggleShow2() {
+      this.showPassword2 = !this.showPassword2;
+    },
     // Verifiy the two password entries are the same
     passwordsAreTheSame(firstPassword, secondPassword) {
       return firstPassword === secondPassword;
@@ -56,17 +65,31 @@ export default {
       </p>
     </div>
     <br><br>
-    <div>
-      <label for="password">Entrez votre nouveau mot de passe : </label>
-      <input type="password" id="password" v-model="newPassword" required>
+    <label for="password">Entrez votre nouveau mot de passe : </label>
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input v-if="showPassword" type="text" id="password" v-model="newPassword" required>
+        <input v-else type="password" id="password" v-model="newPassword" required>
+      </div>
+      <div class="control">
+        <v-btn v-if="showPassword" icon="mdi-eye-outline" class="button" @click="toggleShow" />
+        <v-btn v-else icon="mdi-eye-off-outline" class="button" @click="toggleShow" />
+      </div>
     </div>
     <br><br>
-    <div>
-      <label for="confirm">Confirmez votre nouveau mot de passe : </label>
-      <input type="password" id="confirm" v-model="confirmPassword" required>
-      <br><br>
-      <button type="button" class="btn-submit" v-on:click="changePassword">Valider</button>
+    <label for="confirm">Confirmez votre nouveau mot de passe : </label>
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input v-if="showPassword2" type="text" id="confirm" v-model="confirmPassword" required>
+        <input v-else type="password" id="confirm" v-model="confirmPassword" required>
+      </div>
+      <div class="control">
+        <v-btn v-if="showPassword2" icon="mdi-eye-outline" class="button" @click="toggleShow2" />
+        <v-btn v-else icon="mdi-eye-off-outline" class="button" @click="toggleShow2" />
+      </div>
     </div>
+    <br><br>
+    <button type="button" class="btn-submit" v-on:click="changePassword">Valider</button>
   </div>
 </template>
 
@@ -102,12 +125,15 @@ p, label {
 
 input {
   width: 100%;
+  height: 100%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   font-size: 16px;
   box-sizing: border-box;
 }
+
+
 
 .btn-submit {
   display: block;
