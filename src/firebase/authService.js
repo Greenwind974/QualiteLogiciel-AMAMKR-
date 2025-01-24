@@ -11,7 +11,7 @@ import router from "../router/router";
 // Validation Regex
 const validateUserData = (data) => {
     const nameRegex = /^[a-zA-Z0-9\s]{1,30}$/; // Alphanumérique, 1-30 caractères
-    const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/; // Format d'un email
+    const emailRegex =/^[^@\s]+@[^@\s]+\.[^@\s]+$/; // Format d'un email
     const errors = [];
 
     if (!nameRegex.test(data.firstName)) {

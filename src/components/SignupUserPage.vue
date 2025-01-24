@@ -45,12 +45,11 @@
         </div>
         <div class="form-group">
           <label for="department">Département :</label>
-          <select id="department" v-model="formData.department" :class="{ invalid: !rules.alphaNumeric(formData.department) }" required>
+          <select id="department" v-model="formData.department" required>
             <option value="Informatique">Informatique</option>
-            <option value="Mécanique">Mécanique</option>
+            <option value="Mecanique">Mécanique</option>
             <option value="Manutention">Manutention</option>
           </select>
-          <span v-if="!rules.alphaNumeric(formData.department)">Caractères alphanumériques uniquement.</span>
         </div>
         <div class="form-group">
           <label for="role">Role :</label>
@@ -74,7 +73,8 @@ export default {
         message: "",
         color: "success",
       },
-      // Récupération des données du Form
+      isLoading: false, // Indicateur visuel pour les processus
+      // Données du formulaire
       formData: {
         firstName: "",
         lastName: "",
@@ -83,7 +83,7 @@ export default {
         password: "",
         role: "USER", // Rôle par défaut
       },
-      // Respect Regex
+      // Règles de validation
       rules: {
         email: (value) => {
           const regex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -100,26 +100,61 @@ export default {
   },
   methods: {
     async handleSignup() {
+      this.isLoading = true; // Activer le loader
       try {
-        const userCredential = await signUp(this.email, this.password, {
+        // Validation initiale des champs
+        const validationErrors = this.validateForm();
+        if (validationErrors) {
+          this.showPopup(validationErrors, "error");
+          this.isLoading = false;
+          return;
+        }
+
+        // Inscription
+        const userCredential = await signUp(this.formData.email, this.formData.password, {
           firstName: this.formData.firstName,
           lastName: this.formData.lastName,
           department: this.formData.department,
           role: this.formData.role,
         });
+
         const { uid } = userCredential.user;
-        await addOrUpdateUser(uid, this.email, {
+        await addOrUpdateUser(uid, this.formData.email, {
           firstName: this.formData.firstName,
           lastName: this.formData.lastName,
           department: this.formData.department,
           role: this.formData.role,
         });
+
+        // Succès
         this.showPopup("Utilisateur créé avec succès.", "success");
         this.resetForm();
       } catch (error) {
         console.error("Erreur lors de la création de l'utilisateur :", error);
-        this.showPopup(error.message, "error");
+        // Mauvaise Suprise case :(
+        const message = error.message || "Une erreur inattendue est survenue.";
+        this.showPopup(message, "error");
+      } finally {
+        this.isLoading = false; // Désactiver le loader
       }
+    },
+    // Verification des données du Form
+    validateForm() {
+      // Valider chaque champ selon les règles
+      const errors = [];
+      if (!this.rules.alphaNumeric(this.formData.firstName)) {
+        errors.push("Prénom invalide.");
+      }
+      if (!this.rules.alphaNumeric(this.formData.lastName)) {
+        errors.push("Nom invalide.");
+      }
+      if (!this.rules.email(this.formData.email)) {
+        errors.push("Adresse email invalide.");
+      }
+      if (!this.rules.minLength(6)(this.formData.password)) {
+        errors.push("Le mot de passe doit contenir au moins 6 caractères.");
+      }
+      return errors.length > 0 ? errors.join("\n") : null;
     },
     showPopup(message, color) {
       this.popup.message = message;
@@ -133,11 +168,13 @@ export default {
         email: "",
         department: "",
         password: "",
+        role: "USER",
       };
     },
   },
 };
 </script>
+
 
 <style scoped>
 /* Global Styles */
