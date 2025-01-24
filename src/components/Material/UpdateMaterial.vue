@@ -29,12 +29,14 @@
                 hint="Nom du matériel"
                 v-model="nom"
                 required
+                :rules="[rules.required]"
             ></v-text-field>
 
             <v-text-field
                 label="Version*"
                 hint="Version du matériel (ex: V3.0)"
                 v-model="version"
+                :rules="[rules.required]"
                 required
             ></v-text-field>
 
@@ -42,6 +44,7 @@
                 label="Réference*"
                 hint="Réference du matériel (ex : AN159 pour android, AP951 pour apple...)"
                 v-model="reference"
+                :rules="[rules.required]"
                 required
             ></v-text-field>
 
@@ -90,6 +93,7 @@ import {db} from "@/firebase";
 import { doc,updateDoc, getDoc} from "firebase/firestore";
 
 export default {
+
   props:['matId'],
   created() {
     this.getMat()
@@ -97,6 +101,9 @@ export default {
   data(){
     return{
       dialog:false,
+      rules: {
+        required: value => !!value || 'Field is required',
+      },
       id:this.matId,
       nom:"",
       num_telephone: "",
