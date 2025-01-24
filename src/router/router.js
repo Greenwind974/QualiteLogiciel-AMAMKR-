@@ -15,6 +15,7 @@ const routes = [
     { path: "/signup-user", name: "SignupUser", component: SignupUserPage, meta: { requiresRole: "ADMIN" }},
     {path: "/home", name: "Home", component: HomePage},
     {path: "/manage-users", name: 'ManageUser', component: ManageUserPage, meta: { requiresRole: "ADMIN" }},
+    {path: "/change-password", name: 'ChangePassword', component: ChangePassword}
 ];
 
 const router = createRouter({
