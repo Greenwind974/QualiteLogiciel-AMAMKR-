@@ -5,6 +5,11 @@
 npm install
 ```
 
+## Installations des modules supplémentaires
+```
+npm install vue-router
+```
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve
