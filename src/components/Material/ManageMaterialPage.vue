@@ -45,7 +45,7 @@
                     </v-row>
 
                    <v-row justify="space-around">
-                     <DeleteMaterial :materiel=mat></DeleteMaterial>
+                     <DeleteMaterial :mat-id=mat></DeleteMaterial>
                      </v-row>
                   </v-col>
                 </v-layout>
