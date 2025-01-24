@@ -1,18 +1,16 @@
-// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore"
 import { getAuth } from "firebase/auth"
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAg3jKy0cLTHdcg-7oXNszIBTk7aolve-c",
-  authDomain: "projet-test-94bb1.firebaseapp.com",
-  projectId: "projet-test-94bb1",
-  storageBucket: "projet-test-94bb1.firebasestorage.app",
-  messagingSenderId: "295491745359",
-  appId: "1:295491745359:web:8954fbc732786cc2549c3a"
+  apiKey: "AIzaSyAhbUdrkQfyoRGaLtB1RjEk94AhAiBbU2s",
+  authDomain: "locamat-f808a.firebaseapp.com",
+  projectId: "locamat-f808a",
+  storageBucket: "locamat-f808a.firebasestorage.app",
+  messagingSenderId: "1065537174705",
+  appId: "1:1065537174705:web:d6b640a34cd77b29a37690"
 };
 
 // Initialize Firebase
