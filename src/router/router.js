@@ -7,15 +7,21 @@ import UserProfile from "@/components/UserProfile.vue";
 import SignupUserPage from "@/components/SignupUserPage.vue";
 import HomePage from "@/components/HomePage.vue";
 import ManageUserPage from "@/components/ManageUserPage.vue";
+import ManageMaterialPage from "@/components/Material/ManageMaterialPage.vue";
+import MaterialDisplayPage from "@/components/Material/MaterialDisplayPage.vue";
+import ReservationDisplayPage from "@/components/Reservation/ReservationDisplayPage.vue";
 import ChangePassword from "@/components/ChangePassword.vue";
 
 // Routes et règles
 const routes = [
     { path: "/", name: "Login", component: LoginPage },
     { path: "/profile", name: "Profile", component: UserProfile, meta: { requiresAuth: true } },
-    { path: "/signup-user", name: "SignupUser", component: SignupUserPage, meta: { requiresRole: "ADMIN" }},
+    { path: "/signup-user", name: "SignupUser", component: SignupUserPage, meta: { requiresAuth: true, requiresRole: "ADMIN" }},
     {path: "/home", name: "Home", component: HomePage},
-    {path: "/manage-users", name: 'ManageUser', component: ManageUserPage, meta: { requiresRole: "ADMIN" }},
+    {path: "/manage-users", name: 'ManageUser', component: ManageUserPage,meta: {requiresAuth: true, requiresRole: "ADMIN" }},
+    {path: "/manage-materials", name: 'ManageMaterial', component: ManageMaterialPage,meta: {requiresAuth: true, requiresRole: "ADMIN" }},
+    {path: "/material", name: 'Material', component: MaterialDisplayPage, meta: { requiresAuth: true }},
+    {path: "/reservations", name: 'Reservations', component: ReservationDisplayPage, meta: { requiresAuth: true }},
     {path: "/change-password", name: 'ChangePassword', component: ChangePassword}
 ];
 
