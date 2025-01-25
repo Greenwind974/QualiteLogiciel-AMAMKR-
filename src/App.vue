@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-layout>
+
       <v-app-bar
           color="primary"
       >
@@ -32,9 +33,27 @@
 
         </v-list>
       </v-navigation-drawer>
+
       <v-main v-model="page" scrollable style="height: 100% ">
         <router-view></router-view>
+
       </v-main>
+
+        <v-footer id="footer" color="primary">
+          Alexandre Ethève
+          <v-spacer></v-spacer>
+          Antoine Saintagne
+          <v-spacer></v-spacer>
+          Kanto Rakotomalala
+          <v-spacer></v-spacer>
+          Maxime Marecesche
+          <v-spacer></v-spacer>
+          Maëlys Daniel-Guedj
+          <v-spacer></v-spacer>
+          Raphaël Dézé
+        </v-footer>
+
+
     </v-layout>
   </v-app>
 
@@ -90,7 +109,14 @@ async created() {
 .title {
   text-decoration: none;
   padding: 0.5em 0.75em 0;
+}
 
+#footer{
+  position: absolute;
+  bottom: 0;
+  right:0;
+  width:97%;
+  height:2.5rem;
 }
 
 </style>
