@@ -14,8 +14,8 @@
     <!-- Signup Form -->
     <div class="columns is-centered is-vcentered">
       <div class="column is-narrow">
-        <div class="box has-background" style="max-width: 450px; padding: 2rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-          <div style="max-width: 400px; margin: 0 auto; padding: 2rem;">
+        <div class="box has-background box-register-page">
+          <div class="register-page">
             <h1 class="title has-text-centered">Créer un utilisateur</h1>
             <form @submit.prevent="handleSignup">
               <div class="field">
@@ -116,6 +116,16 @@ html {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
+}
+.box-register-page{
+  max-width: 450px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.register-page {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
 /* Navbar Styles */
