@@ -107,7 +107,7 @@ export const signInAndRedirect = async (email, password) => {
 
         if (userDoc.exists() && userDoc.data().firstLogin) {
             // Rediriger l'utilisateur vers une page pour changer son mot de passe
-            router.push("/reset-password");
+            router.push("/change-password");
         } else {
             router.push("/home");
         }
