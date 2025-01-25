@@ -1,29 +1,5 @@
 <template>
   <div class="user-profile" v-if="user">
-    <div class="sidebar">
-      <!-- Sidebar -->
-      <ul>
-        <li v-if="role === 'ADMIN'">
-          <a href="/manage-users">Gérer les utilisateurs</a>
-        </li>
-        <li v-if="role === 'USER' || role === 'ADMIN'">
-          <a href="/emprunts">Emprunts</a>
-        </li>
-        <li v-if="role === 'USER' || role === 'ADMIN'">
-          <a href="/retour">Retour</a>
-        </li>
-      </ul>
-    </div>
-    <!-- Header Section -->
-    <div class="profile-header">
-      <div class="cover-photo"></div>
-      <div class="user-info">
-        <div class="text-info">
-          <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
-          <p>Bonjour {{ user.FirstName }} !</p>
-        </div>
-      </div>
-    </div>
 
     <!-- Profile Form -->
     <div class="profile-form">
@@ -104,25 +80,8 @@ html {
   font-family: Arial, sans-serif;
 }
 
-/* Header Section */
-.profile-header {
-  position: relative;
-  height: 300px;
-}
 
-.cover-photo {
-  height: 200px;
-  background: url("https://via.placeholder.com/1440x341") no-repeat center center;
-  background-size: cover;
-}
 
-.user-info {
-  position: absolute;
-  bottom: -50px;
-  left: 20px;
-  display: flex;
-  align-items: center;
-}
 
 .text-info h2 {
   margin: 0;
@@ -187,35 +146,4 @@ html {
   background-color: #c9302c;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 250px;
-  height: calc(100vh - 60px);
-  background-color: #0056b3;
-  position: fixed;
-  top: 0;
-  left: 0;
-  padding: 20px;
-  color: white;
-}
-
-.sidebar h2 {
-  margin-bottom: 20px;
-  color: #ffc107;
-}
-
-.sidebar ul li {
-  list-style: none;
-  margin-bottom: 15px;
-}
-
-.sidebar ul li a {
-  text-decoration: none;
-  color: white;
-  font-size: 16px;
-}
-
-.sidebar ul li a:hover {
-  color: #ffc107;
-}
 </style>

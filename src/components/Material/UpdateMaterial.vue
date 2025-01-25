@@ -1,7 +1,7 @@
 
 
 <template>
-  <v-dialog persistent max-width="500px" v-model="dialog">
+  <v-dialog persistent max-width="700px" v-model="dialog">
 
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
@@ -61,26 +61,10 @@
                 v-model="photo"
                 :rules="[rules.urlFormat]"
             ></v-text-field>
-            <v-checkbox label="Réservé"
-            hint="Séléctionner si le matériel est réservé ou non "
-            v-model="booked"></v-checkbox>
-            <v-text-field
-                label="Date de début d'emprunt"
-                v-model="dateDebut"
-                v-if="booked"
-            ></v-text-field>
-            <v-text-field
-                label="Date de fin d'emprunt"
-                v-model="dateFin"
-                v-if="booked"
-            ></v-text-field>
-            <v-combobox
-                label="Emprunteur"
-                hint="Sélectionner l'utilisateur correspondant à l'emprunt"
-                v-model="emprunteur"
-                :items="users.values()"
-                v-if="booked"
-            ></v-combobox>
+            <v-checkbox :disabled="!this.booked"
+                   color="warning"
+            label="Supprimer la réservation de ce matériel"
+            v-model="noBooked"></v-checkbox>
 
           </v-col>
         </v-row>
@@ -113,14 +97,13 @@
 
 <script>
 import {db} from "@/firebase";
-import {doc, updateDoc, getDoc, getDocs, collection} from "firebase/firestore";
+import {doc, updateDoc, getDoc} from "firebase/firestore";
 
 export default {
 
   props:['matId'],
   created() {
     this.getMat()
-    this.fetchUsersEmail()
   },
   data(){
     return{
@@ -140,13 +123,8 @@ export default {
       photo: "",
       reference: "",
       version: "",
-      dateDebut: "",
-      dateFin:"",
       booked:false,
-      emprunteur:"",
-
-      users: new Map, // Liste des utilisateurs
-
+      noBooked:false,
     }
 
   },
@@ -162,10 +140,8 @@ export default {
           this.photo = docSnap.data().photo;
           this.reference = docSnap.data().reference;
           this.version = docSnap.data().version;
-          this.dateDebut=docSnap.data().dateDebut;
-          this.dateFin=docSnap.data().dateFin;
           this.booked=docSnap.data().booked;
-          this.emprunteur=docSnap.data().emprunteur;
+
           //console.log("Document trouvé :", docSnap.data());
           return docSnap.data();
         } else {
@@ -180,56 +156,50 @@ export default {
 
     },
     async onSaveChanges() {
-      if (this.booked){
-        if (this.dateFin.trim() === '' || this.dateDebut.trim() === '' || this.emprunteur.trim() === ''||this.nom.trim() === '' || this.version.trim() === '' || this.reference.trim() === ''){
+
+        if (this.nom.trim() === '' || this.version.trim() === '' || this.reference.trim() === ''){
           console.log("no")
         }
         else{
           await this.updateMaterial()
           this.dialog = false
         }
-      }
-      else{
-        if (this.nom.trim() === '' || this.version.trim() === '' || this.reference.trim() === '') {
-          console.log("no")
-        }
-
-        else{
-          await this.updateMaterial()
-          this.dialog = false
-        }
-      }
-
-    },
+      },
 
     async updateMaterial() {
-      if (!this.booked){
-        this.dateFin="";
-        this.dateDebut="";
-        this.emprunteur="";
-      }
-
       try {
         const docRef = doc(db, "MATERIELS", this.matId);
         const docSnap = await getDoc(docRef);
+        this.booked=!this.noBooked;
 
-        if (docSnap.exists()) {
+        if (docSnap.exists() && this.booked) {
           await updateDoc(docRef, {
             reference: this.reference,
             num_telephone: this.num_telephone,
             photo: this.photo,
             version: this.version,
             nom: this.nom,
-            dateDebut:this.dateDebut,
-            dateFin:this.dateFin,
-            booked:this.booked,
-            emprunteur:this.emprunteur,
-
-
           });
           console.log("Document trouvé :", docSnap.data());
           return docSnap.data();
-        } else {
+        }
+        else if(docSnap.exists() && !this.booked){
+          await updateDoc(docRef, {
+            reference: this.reference,
+            num_telephone: this.num_telephone,
+            photo: this.photo,
+            version: this.version,
+            nom: this.nom,
+            booked:this.booked,
+            dateDebut:"",
+            dateFin:"",
+            emprunteur:"",
+          });
+          console.log("Document trouvé :", docSnap.data());
+          return docSnap.data();
+
+        }
+        else {
           console.log("Aucun document trouvé avec cet ID !");
           return null
         }
@@ -238,16 +208,7 @@ export default {
       }
 
     },
-    async fetchUsersEmail() {
-      try {
-        const querySnapshot = await getDocs(collection(db, "UTILISATEURS"));
-        querySnapshot.forEach((doc) => {
-          this.users.set( doc.id, doc.data().Email);
-        });
-      } catch (error) {
-        console.error("Erreur lors de la récupération des utilisateurs :", error);
-      }
-    },
+
 
   }}
 

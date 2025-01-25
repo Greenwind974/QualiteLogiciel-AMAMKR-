@@ -45,10 +45,10 @@
                     </v-row>
 
                    <v-row justify="space-around">
-                     <DeleteMaterial :mat-id=mat></DeleteMaterial>
+                     <DeleteMaterial  :mat-id=mat  ></DeleteMaterial>
                      </v-row>
 
-                    <v-card-text v-if="this.materiels.get(mat).booked">
+                    <v-card-text  v-if="this.materiels.get(mat).booked" >
                       Indisponible
                     </v-card-text>
                     <v-card-text v-if="!this.materiels.get(mat).booked">
@@ -78,9 +78,11 @@ import DeleteMaterial from "@/components/Material/DeleteMaterial.vue";
   export default {
     components: {DeleteMaterial, UpdateMaterial, CreateMaterial},
     data(){
-      return { materiels: new Map()}
+      return { materiels: new Map(),
+      }
 
     },
+
     methods:{
       async readMaterials(){
         const querySnap=await getDocs(query(collection(db, "MATERIELS")))
@@ -96,6 +98,9 @@ import DeleteMaterial from "@/components/Material/DeleteMaterial.vue";
 
       this.readMaterials()
 
+    },
+    updated() {
+      this.readMaterials()
     }
   }
 
@@ -108,10 +113,7 @@ import DeleteMaterial from "@/components/Material/DeleteMaterial.vue";
   height:180px;
   width:50%;
 }
-.bouton{
-  padding:3px;
-  margin-top:30px;
-}
+
 
 
 </style>
