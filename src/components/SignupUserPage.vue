@@ -30,8 +30,8 @@
         </div>
         <div class="form-group">
           <label for="password">Mot de passe :</label>
-          <input type="password" id="password" v-model="formData.password" :class="{ invalid: !rules.minLength(6)(formData.password) }" required />
-          <span v-if="!rules.minLength(6)(formData.password)">Minimum 6 caractères.</span>
+          <input type="password" id="password" v-model="formData.password" @input="allRules" required />
+          <span v-if="this.passwordError" style="color: red">{{ this.passwordError }}</span>
         </div>
         <div class="form-group">
           <label for="firstName">Prénom :</label>
@@ -96,10 +96,53 @@ export default {
         },
         minLength: (min) => (value) =>
             (value && value.length >= min) || `Minimum ${min} caractères.`,
+        minOneUpper: (value) =>
+            (value && (value.match(/[A-Z]/g) || []).length >= 1) || "Minimum 1 majuscule",
+        minOneLower: (value) =>
+            (value && (value.match(/[a-z]/g) || []).length >= 1) || "Minimum 1 minuscule",
+        minOneNumber: (value) =>
+            (value && (value.match(/[0-9]/g) || []).length >= 1) || "Minimum 1 chiffre",
+        minOneSpecialChar: (value) =>
+            (value && (value.match(/[@?!#$%^&*()_+\-=[\]{};':"\\|,.<>/]/g) || []).length >= 1) ||
+            "Minimum 1 caractère spécial"
       },
+      passwordError: null
     };
   },
   methods: {
+    minLengthRule() {
+      const rule = this.rules.minLength(8);
+      const result = rule(this.formData.password);
+      return result === true ? null : result;
+    },
+    minOneUpperRule() {
+      const result = this.rules.minOneUpper(this.formData.password);
+      return result === true ? null : result;
+    },
+    minOneLowerRule() {
+      const result = this.rules.minOneLower(this.formData.password);
+      return result === true ? null : result;
+    },
+    minOneNumberRule() {
+      const result = this.rules.minOneNumber(this.formData.password);
+      return result === true ? null : result;
+    },
+    minOneSpecialCharRule() {
+      const result = this.rules.minOneSpecialChar(this.formData.password);
+      return result === true ? null : result;
+    },
+    // Verifying all the rules at the same time
+    allRules() {
+      // Initialise rules
+      const minLengthRule = this.minLengthRule();
+      const minOneUpperRule = this.minOneUpperRule();
+      const minOneLowerRule = this.minOneLowerRule();
+      const minOneNumberRule = this.minOneNumberRule();
+      const minOneSpecialCharRule = this.minOneSpecialCharRule();
+      // Get rules applied
+      const result = minLengthRule || minOneUpperRule || minOneLowerRule || minOneNumberRule || minOneSpecialCharRule;
+      this.passwordError = result === true ? null : result;
+    },
     async handleSignup() {
       this.isLoading = true; // Activer le loader
       try {
@@ -154,8 +197,20 @@ export default {
       if (!this.rules.email(this.formData.email)) {
         errors.push("Adresse email invalide.");
       }
-      if (!this.rules.minLength(6)(this.formData.password)) {
+      if (!this.rules.minLength(8)(this.formData.password)) {
         errors.push("Le mot de passe doit contenir au moins 6 caractères.");
+      }
+      if(!this.rules.minOneUpper(this.formData.password)) {
+        errors.push("Le mot de passe doit contenir au moins une majuscule.");
+      }
+      if(!this.rules.minOneLower(this.formData.password)) {
+        errors.push("Le mot de passe doit contenir au moins une minuscule.");
+      }
+      if(!this.rules.minOneNumber(this.formData.password)) {
+        errors.push("Le mot de passe doit contenir au moins un chiffre.");
+      }
+      if(!this.rules.minOneSpecialChar(this.formData.password)) {
+        errors.push("Le mot de passe doit contenir au moins un caractère spécial.");
       }
       return errors.length > 0 ? errors.join("\n") : null;
     },

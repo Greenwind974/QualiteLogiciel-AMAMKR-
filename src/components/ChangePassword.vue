@@ -14,15 +14,22 @@ export default {
         minLength: (min) => (value) =>
             (value && value.length >= min) || `Minimum ${min} caractères.`,
         minOneUpper: (value) =>
-            (value && (value.match(/[A-Z]/g) || []).length >= 1)  || "Minimum 1 majuscule"
+            (value && (value.match(/[A-Z]/g) || []).length >= 1) || "Minimum 1 majuscule",
+        minOneLower: (value) =>
+            (value && (value.match(/[a-z]/g) || []).length >= 1) || "Minimum 1 minuscule",
+        minOneNumber: (value) =>
+            (value && (value.match(/[0-9]/g) || []).length >= 1) || "Minimum 1 chiffre",
+        minOneSpecialChar: (value) =>
+            (value && (value.match(/[@?!#$%^&*()_+\-=[\]{};':"\\|,.<>/]/g) || []).length >= 1) ||
+            "Minimum 1 caractère spécial"
       },
       errors: {
-        minLengthError: null,
-        minLengthError2: null
+        // Error for first field
+        allError: null,
+        // Error for second field
+        allError2: null
       }
-
     }
-
   },
   methods: {
 
@@ -35,11 +42,35 @@ export default {
     minLengthRule() {
       const rule = this.rules.minLength(8);
       const result = rule(this.formData.newPassword);
-      this.errors.minLengthError = result === true ? null : result;
+      return result === true ? null : result;
     },
     minOneUpperRule() {
       const result = this.rules.minOneUpper(this.formData.newPassword);
-      this.errors.minLengthError = result === true ? null : result;
+      return result === true ? null : result;
+    },
+    minOneLowerRule() {
+      const result = this.rules.minOneLower(this.formData.newPassword);
+      return result === true ? null : result;
+    },
+    minOneNumberRule() {
+      const result = this.rules.minOneNumber(this.formData.newPassword);
+      return result === true ? null : result;
+    },
+    minOneSpecialCharRule() {
+      const result = this.rules.minOneSpecialChar(this.formData.newPassword);
+      return result === true ? null : result;
+    },
+    // Verifying all the rules at the same time
+    allRules() {
+      // Initialise rules
+      const minLengthRule = this.minLengthRule();
+      const minOneUpperRule = this.minOneUpperRule();
+      const minOneLowerRule = this.minOneLowerRule();
+      const minOneNumberRule = this.minOneNumberRule();
+      const minOneSpecialCharRule = this.minOneSpecialCharRule();
+      // Get rules applied
+      const result = minLengthRule || minOneUpperRule || minOneLowerRule || minOneNumberRule || minOneSpecialCharRule;
+      this.errors.allError = result === true ? null : result;
     },
 
     // -------- METHODS FOR SECOND FIELD ---------------
@@ -50,7 +81,35 @@ export default {
     minLengthRule2() {
       const rule = this.rules.minLength(8);
       const result = rule(this.formData.confirmPassword);
-      this.errors.minLengthError2 = result === true ? null : result;
+      return result === true ? null : result;
+    },
+    minOneUpperRule2() {
+      const result = this.rules.minOneUpper(this.formData.confirmPassword);
+      return result === true ? null : result;
+    },
+    minOneLowerRule2() {
+      const result = this.rules.minOneLower(this.formData.confirmPassword);
+      return result === true ? null : result;
+    },
+    minOneNumberRule2() {
+      const result = this.rules.minOneNumber(this.formData.confirmPassword);
+      return result === true ? null : result;
+    },
+    minOneSpecialCharRule2() {
+      const result = this.rules.minOneSpecialChar(this.formData.confirmPassword);
+      return result === true ? null : result;
+    },
+    // Verifying all the rules at the same time
+    allRules2() {
+      // Initialise rules
+      const minLengthRule = this.minLengthRule2();
+      const minOneUpperRule = this.minOneUpperRule2();
+      const minOneLowerRule = this.minOneLowerRule2();
+      const minOneNumberRule = this.minOneNumberRule2();
+      const minOneSpecialCharRule = this.minOneSpecialCharRule2();
+      // Get rules applied
+      const result = minLengthRule || minOneUpperRule || minOneLowerRule || minOneNumberRule || minOneSpecialCharRule;
+      this.errors.allError2 = result === true ? null : result;
     },
 
     // -------- METHODS FOR BUTTON ---------------
@@ -105,9 +164,9 @@ export default {
     <label for="password">Entrez votre nouveau mot de passe : </label>
     <div class="field has-addons">
       <div class="control is-expanded">
-        <input v-if="formData.showPassword" type="text" id="password" v-model="formData.newPassword" @input="minLengthRule" required>
-        <input v-else-if="!formData.showPassword" type="password" id="password" v-model="formData.newPassword" @input="minLengthRule" required>
-        <span v-if="this.errors.minLengthError" style="color: red">{{  this.errors.minLengthError }}</span>
+        <input v-if="formData.showPassword" type="text" id="password" v-model="formData.newPassword" @input="allRules" required>
+        <input v-else-if="!formData.showPassword" type="password" id="password" v-model="formData.newPassword" @input="allRules" required>
+        <span v-if="this.errors.allError" style="color: red">{{  this.errors.allError }}</span>
       </div>
       <div class="control">
         <v-btn v-if="formData.showPassword" icon="mdi-eye-outline" class="button" @click="toggleShow" />
@@ -118,9 +177,9 @@ export default {
     <label for="confirm">Confirmez votre nouveau mot de passe : </label>
     <div class="field has-addons">
       <div class="control is-expanded">
-        <input v-if="formData.showPassword2" type="text" id="confirm" v-model="formData.confirmPassword"  @input="minLengthRule2" required>
-        <input v-else type="password" id="confirm" v-model="formData.confirmPassword"  @input="minLengthRule2" required>
-        <span v-if="this.errors.minLengthError2" style="color: red">{{ this.errors.minLengthError2 }}</span>
+        <input v-if="formData.showPassword2" type="text" id="confirm" v-model="formData.confirmPassword"  @input="allRules2" required>
+        <input v-else type="password" id="confirm" v-model="formData.confirmPassword"  @input="allRules2" required>
+        <span v-if="this.errors.allError2" style="color: red">{{ this.errors.allError2 }}</span>
       </div>
       <div class="control">
         <v-btn v-if="formData.showPassword2" icon="mdi-eye-outline" class="button" @click="toggleShow2" />
