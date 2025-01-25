@@ -1,5 +1,11 @@
 <template>
+  <!-- Pop Up -->
   <div>
+    <div v-if="popup.show" class="popup" :class="popup.color">
+      <p>{{ popup.message }}</p>
+      <button @click="popup.show = false">Fermer</button>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar">
       <div class="navbar-left">
@@ -17,32 +23,38 @@
       <form @submit.prevent="handleSignup">
         <div class="form-group">
           <label for="email">Email :</label>
-          <input type="email" id="email" v-model="email" required />
+          <input type="email" id="email" v-model="formData.email" :class="{ invalid: !rules.email(formData.email) }"
+                 required
+          />
+          <span v-if="!rules.email(formData.email)">Adresse email invalide.</span>
         </div>
         <div class="form-group">
           <label for="password">Mot de passe :</label>
-          <input type="password" id="password" v-model="password" required />
+          <input type="password" id="password" v-model="formData.password" :class="{ invalid: !rules.minLength(6)(formData.password) }" required />
+          <span v-if="!rules.minLength(6)(formData.password)">Minimum 6 caractères.</span>
         </div>
         <div class="form-group">
           <label for="firstName">Prénom :</label>
-          <input type="text" id="firstName" v-model="firstName" required />
+          <input type="text" id="firstName" v-model="formData.firstName" :class="{ invalid: !rules.alphaNumeric(formData.firstName) }" required />
+          <span v-if="!rules.alphaNumeric(formData.firstName)">Caractères alphanumériques uniquement.</span>
         </div>
         <div class="form-group">
           <label for="lastName">Nom :</label>
-          <input type="text" id="lastName" v-model="lastName" required />
+          <input type="text" id="lastName" v-model="formData.lastName" :class="{ invalid: !rules.alphaNumeric(formData.lastName) }" required />
+          <span v-if="!rules.alphaNumeric(formData.lastName)">Caractères alphanumériques uniquement.</span>
         </div>
         <div class="form-group">
           <label for="department">Département :</label>
-          <select id="department" v-model="department" required>
+          <select id="department" v-model="formData.department" required>
             <option value="Informatique">Informatique</option>
-            <option value="Mécanique">Mécanique</option>
+            <option value="Mecanique">Mécanique</option>
             <option value="Manutention">Manutention</option>
           </select>
         </div>
-        <!-- <div class="form-group">
+        <div class="form-group">
           <label for="role">Role :</label>
-          <input type="text" id="role" v-model="role" required />
-        </div>-->
+          <input type="text" id="role" v-model="formData.role" value="USER" disabled />
+        </div>
         <button type="submit" class="btn-submit">Créer l'utilisateur</button>
       </form>
     </div>
@@ -55,39 +67,117 @@ import { signUp, addOrUpdateUser } from "@/firebase/authService";
 export default {
   data() {
     return {
-      email: "",
-      password: "",
-      firstName: "",
-      lastName: "",
-      department: "",
-      role: "USER", // Rôle par défaut
+      // Popup
+      popup: {
+        show: false,
+        message: "",
+        color: "success",
+      },
+      isLoading: false, // Indicateur visuel pour les processus
+      // Données du formulaire
+      formData: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        department: "",
+        password: "",
+        firstConnection: true,
+        role: "USER", // Rôle par défaut
+      },
+      // Règles de validation
+      rules: {
+        email: (value) => {
+          const regex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+          return regex.test(value) || "Adresse email invalide.";
+        },
+        alphaNumeric: (value) => {
+          const regex = /^[a-zA-Z0-9\s]{1,30}$/;
+          return regex.test(value) || "Caractères alphanumériques uniquement.";
+        },
+        minLength: (min) => (value) =>
+            (value && value.length >= min) || `Minimum ${min} caractères.`,
+      },
     };
   },
   methods: {
     async handleSignup() {
+      this.isLoading = true; // Activer le loader
       try {
-        const userCredential = await signUp(this.email, this.password, {
-          firstName: this.firstName,
-          lastName: this.lastName,
-          department: this.department,
+        // Validation initiale des champs
+        const validationErrors = this.validateForm();
+        if (validationErrors) {
+          this.showPopup(validationErrors, "error");
+          this.isLoading = false;
+          return;
+        }
+
+        // Inscription
+        const userCredential = await signUp(this.formData.email, this.formData.password, {
+          firstName: this.formData.firstName,
+          lastName: this.formData.lastName,
+          department: this.formData.department,
+          firstConnection: this.firstConnection,
+          role: this.formData.role,
         });
+
         const { uid } = userCredential.user;
-        await addOrUpdateUser(uid, this.email, {
-          firstName: this.firstName,
-          lastName: this.lastName,
-          department: this.department,
-          role: this.role,
+        await addOrUpdateUser(uid, this.formData.email, {
+          firstName: this.formData.firstName,
+          lastName: this.formData.lastName,
+          department: this.formData.department,
+          firstConnection: this.firstConnection,
+          role: this.formData.role,
         });
-        alert("Utilisateur créé avec succès !");
-        this.$router.push("/home");
+
+        // Succès
+        this.showPopup("Utilisateur créé avec succès.", "success");
+        this.resetForm();
       } catch (error) {
         console.error("Erreur lors de la création de l'utilisateur :", error);
-        alert("Une erreur est survenue. Veuillez réessayer.");
+        // Mauvaise Suprise case :(
+        const message = error.message || "Une erreur inattendue est survenue.";
+        this.showPopup(message, "error");
+      } finally {
+        this.isLoading = false; // Désactiver le loader
       }
+    },
+    // Verification des données du Form
+    validateForm() {
+      // Valider chaque champ selon les règles
+      const errors = [];
+      if (!this.rules.alphaNumeric(this.formData.firstName)) {
+        errors.push("Prénom invalide.");
+      }
+      if (!this.rules.alphaNumeric(this.formData.lastName)) {
+        errors.push("Nom invalide.");
+      }
+      if (!this.rules.email(this.formData.email)) {
+        errors.push("Adresse email invalide.");
+      }
+      if (!this.rules.minLength(6)(this.formData.password)) {
+        errors.push("Le mot de passe doit contenir au moins 6 caractères.");
+      }
+      return errors.length > 0 ? errors.join("\n") : null;
+    },
+    showPopup(message, color) {
+      this.popup.message = message;
+      this.popup.color = color;
+      this.popup.show = true;
+    },
+    resetForm() {
+      this.formData = {
+        firstName: "",
+        lastName: "",
+        email: "",
+        department: "",
+        password: "",
+        role: "USER",
+      };
     },
   },
 };
 </script>
+
 
 <style scoped>
 /* Global Styles */
@@ -129,7 +219,7 @@ html {
   color: #ffc107;
 }
 
-/* Signup Form Styles */
+/* Signup Form */
 .signup-user-page {
   max-width: 600px;
   margin: 50px auto;

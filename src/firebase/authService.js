@@ -5,7 +5,7 @@ import {
     signOut,
 } from "firebase/auth";
 import { auth, db} from "@/firebase";
-import {doc, setDoc, getDoc} from "firebase/firestore";
+import {doc, setDoc, getDoc, updateDoc} from "firebase/firestore";
 import router from "../router/router";
 
 // Validation Regex
@@ -105,10 +105,16 @@ export const signInAndRedirect = async (email, password) => {
         const userRef = doc(db, "UTILISATEURS", user.uid);
         const userDoc = await getDoc(userRef);
 
-        if (userDoc.exists() && userDoc.data().firstLogin) {
+        if (userDoc.exists() && userDoc.data().FirstConnection) {
+            console.log("First login")
             // Rediriger l'utilisateur vers une page pour changer son mot de passe
-            router.push("/reset-password");
+            router.push("/change-password");
+            // Change boolean to false
+            await updateDoc(userRef, {
+                FirstConnection: false
+            });
         } else {
+            console.log("Not first");
             router.push("/home");
         }
     } catch (error) {
@@ -116,3 +122,4 @@ export const signInAndRedirect = async (email, password) => {
         throw error;
     }
 };
+

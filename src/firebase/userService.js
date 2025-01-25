@@ -1,7 +1,8 @@
+// Imports
 import { auth, db } from "@/firebase";
-import {onAuthStateChanged} from "firebase/auth";
 import {doc, getDoc} from "firebase/firestore";
 
+// Recupération des données de l'utilisateur
 export const fetchUserData = async () => {
     try {
         const user = auth.currentUser;
@@ -9,7 +10,6 @@ export const fetchUserData = async () => {
             const userId = user.uid;
             const userDocRef = doc(db, "UTILISATEURS", userId);
             const userDoc = await getDoc(userDocRef);
-
             if (userDoc.exists()) {
                 return userDoc.data();
             } else {
@@ -24,15 +24,4 @@ export const fetchUserData = async () => {
         console.error("Error fetching user data:", error);
         throw error;
     }
-};
-
-export const observeAuthStateAndFetchData = (callback) => {
-    return onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            const userData = await fetchUserData();
-            callback(userData);
-        } else {
-            callback(null);
-        }
-    });
 };
