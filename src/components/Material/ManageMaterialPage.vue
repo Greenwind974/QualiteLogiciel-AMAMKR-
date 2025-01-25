@@ -47,6 +47,14 @@
                    <v-row justify="space-around">
                      <DeleteMaterial :mat-id=mat></DeleteMaterial>
                      </v-row>
+
+                    <v-card-text v-if="this.materiels.get(mat).booked">
+                      Indisponible
+                    </v-card-text>
+                    <v-card-text v-if="!this.materiels.get(mat).booked">
+                      Disponible
+                    </v-card-text>
+
                   </v-col>
                 </v-layout>
               </v-container>

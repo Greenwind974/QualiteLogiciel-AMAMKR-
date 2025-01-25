@@ -1,9 +1,18 @@
 <template >
+  <v-container >
+    <v-layout col>
 
+      <v-col>
+        filter
+      </v-col>
+    </v-layout>
+  </v-container>
+
+  <v-divider></v-divider>
   <v-container >
     <v-layout row wrap class="mb-2"
-              v-for="mat in materiels"
-              :key="mat.id">
+              v-for="mat in materiels.keys()"
+              :key="mat">
       <v-row justify="center">
         <v-card variant="flat"
                 color="secondary"
@@ -13,15 +22,15 @@
             <v-container>
               <v-img width="10em"
                      contain
-                     :src="mat.photo">
+                     :src="this.materiels.get(mat).photo">
               </v-img>
             </v-container>
             <v-container>
-              <v-card-title>{{mat.nom}}</v-card-title>
-              <v-card-subtitle>version : {{mat.version}}</v-card-subtitle>
-              <v-card-text>téléphone : {{mat.num_telephone}}
+              <v-card-title>{{this.materiels.get(mat).nom}}</v-card-title>
+              <v-card-subtitle>version : {{this.materiels.get(mat).version}}</v-card-subtitle>
+              <v-card-text>téléphone : {{this.materiels.get(mat).num_telephone}}
                 <v-spacer></v-spacer>
-                référence : {{mat.reference}}</v-card-text>
+                référence : {{this.materiels.get(mat).reference}}</v-card-text>
             </v-container>
             <v-divider vertical></v-divider>
             <v-container>
@@ -29,7 +38,7 @@
 
                 <v-col>
                   <v-row justify="space-around">
-                    <BookMaterial :materiel=mat></BookMaterial>
+                    <BookMaterial :mat-id=mat></BookMaterial>
                   </v-row>
 
                 </v-col>
@@ -46,48 +55,33 @@
 </template>
 
 <script>
-import {collection, query, addDoc, getDocs, doc, deleteDoc} from "firebase/firestore";
+import {collection, query,  getDocs} from "firebase/firestore";
 import {db} from "@/firebase";
+
 import BookMaterial from "@/components/Material/BookMaterial.vue";
+
 
 export default {
   components: {BookMaterial},
   data(){
-    return { materiels:[]}
+    return { materiels: new Map()}
 
   },
   methods:{
-    async createMaterial(){
-      const colMat = collection(db, "MATERIELS")
-      const dataObj={
-        nom:"ASUS Zenbook",
-        num_telephone:"",
-        photo:'https://www.accessoires-asus.com/images/articles/126495/276379967742.jpg',
-        reference:"AN321",
-        version:"V15",
-      }
-      const docRef = await addDoc(colMat, dataObj)
-      console.log('Doc id :', docRef.id)
-    },
     async readMaterials(){
       const querySnap=await getDocs(query(collection(db, "MATERIELS")))
       querySnap.forEach((mat)=>{
-        this.materiels.push(mat.data())
+        this.materiels.set(mat.id,mat.data())
       })
+      console.log(this.materiels)
     },
-    async dropMaterial(){
-      await deleteDoc(doc(db, 'MATERIELS', 'VJwGVd962wipdRBMRMhD'))
-    }
 
   },
   created(){
-    //this.createMaterial()
     this.readMaterials()
-    //this.dropMaterial()
+
   }
 }
-
-
 
 </script>
 

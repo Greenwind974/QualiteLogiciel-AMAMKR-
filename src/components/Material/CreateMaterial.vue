@@ -138,6 +138,10 @@ export default {
         photo: this.photo,
         reference: this.reference,
         version: this.version,
+        dateDebut: "",
+        dateFin:"",
+        booked:false,
+        emprunteur:null,
       }
       const docRef = await addDoc(colMat, dataObj)
       console.log('Doc id :', docRef.id)

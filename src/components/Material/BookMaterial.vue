@@ -35,30 +35,21 @@
                 référence : {{reference}}
                 <v-spacer>
                 </v-spacer>
-                <v-select
-                    :items="['1 semaine', '2 semaines', '3 semaines', '4 semaines']"
-                    label="Durée de l'emprunt"
-                    required
-                ></v-select>
-                <v-date-picker
+
+                <!--<v-date-picker
                     max="2018-03-20"
                     min="2016-06-15"
-                ></v-date-picker>
+                ></v-date-picker>-->
               </v-card-text>
+              <v-select
+                  :items="['1 semaine', '2 semaines', '3 semaines', '4 semaines']"
+                  label="Durée de l'emprunt"
+                  required
+              ></v-select>
 
-                <!--<v-select
-                    :items="['1 semaine', '2 semaines', '3 semaines', '4 semaines']"
-                    label="Durée de l'emprunt"
-                    required
-                ></v-select>-->
             </v-container>
           </v-row>
           <v-row>
-
-
-
-
-
             <v-container>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -85,26 +76,95 @@
   </v-dialog>
 </template>
 
-<script>
+<script>import {db} from "@/firebase";
+import { doc,updateDoc, getDoc} from "firebase/firestore";
+
 export default {
-  props:['materiel'],
+
+  props:['matId'],
+  created() {
+    this.getMat()
+  },
   data(){
     return{
       dialog:false,
-      nom:this.materiel.nom,
-      num_telephone: this.materiel.num_telephone,
-      photo: this.materiel.photo,
-      reference: this.materiel.reference,
-      version: this.materiel.version,
-
-
-
+      rules: {
+        required: value => !!value || 'Field is required',
+      },
+      id:this.matId,
+      nom:"",
+      num_telephone: "",
+      photo: "",
+      reference: "",
+      version: "",
+      dateDebut:"",
+      dateFin:"",
+      emprunteur:"",
+      booked:false,
     }
-  },
-  methods:{
 
-  }
-}
+  },
+  methods: {
+    async getMat() {
+      try {
+        const docRef = doc(db, "MATERIELS", this.matId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          this.nom = docSnap.data().nom;
+          this.num_telephone = docSnap.data().num_telephone;
+          this.photo = docSnap.data().photo;
+          this.reference = docSnap.data().reference;
+          this.version = docSnap.data().version;
+          this.booked=docSnap.data().booked;
+          //console.log("Document trouvé :", docSnap.data());
+          return docSnap.data();
+        } else {
+
+          console.log("Aucun document trouvé avec cet ID !");
+          return null
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération du document :", error);
+      }
+
+
+    },
+    async onSaveChanges() {
+      if (this.nom.trim() === '' || this.version.trim() === '' || this.reference.trim() === '') {
+        console.log("no")
+      }
+      else{
+        await this.updateMaterial()
+        this.dialog = false
+      }
+    },
+
+    async updateMaterial() {
+
+      try {
+        const docRef = doc(db, "MATERIELS", this.matId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          await updateDoc(docRef, {
+            reference: this.reference,
+            num_telephone: this.num_telephone,
+            photo: this.photo,
+            version: this.version,
+            nom: this.nom,
+          });
+          console.log("Document trouvé :", docSnap.data());
+          return docSnap.data();
+        } else {
+          console.log("Aucun document trouvé avec cet ID !");
+          return null
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération du document :", error);
+      }
+
+    }}}
 
 
 </script>
