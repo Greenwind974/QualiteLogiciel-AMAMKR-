@@ -29,14 +29,14 @@
                 hint="Nom du matériel"
                 v-model="nom"
                 required
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.counterNom]"
             ></v-text-field>
 
             <v-text-field
                 label="Version*"
                 hint="Version du matériel (ex: V3.0)"
                 v-model="version"
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.counterVersion]"
                 required
             ></v-text-field>
 
@@ -44,7 +44,7 @@
                 label="Réference*"
                 hint="Réference du matériel (ex : AN159 pour android, AP951 pour apple...)"
                 v-model="reference"
-                :rules="[rules.required]"
+                :rules="[rules.required, rules.alphaNumReference]"
                 required
             ></v-text-field>
 
@@ -52,12 +52,14 @@
                 label="Numéro"
                 hint="Numéro de téléphone"
                 v-model="num_telephone"
+                :rules="[rules.counterTelephone]"
             ></v-text-field>
 
             <v-text-field
                 label="URL Photo"
                 hint="URL de la photo du matériel"
                 v-model="photo"
+                :rules="[rules.urlFormat]"
             ></v-text-field>
             <v-checkbox label="Réservé"
             hint="Séléctionner si le matériel est réservé ou non "
@@ -126,6 +128,12 @@ export default {
       dialog:false,
       rules: {
         required: value => !!value || 'Field is required',
+        counterNom: value => (value.length <= 30) || 'Champs invalide',
+        counterVersion: value => (value.length <= 15 && value.length>=3 && value.match(/^V/)) || 'Champs invalide',
+        counterTelephone: value => (value.length === 10) || 'Champs invalide',
+        onlyNumbers: value => (value && value.match(/[0-9]/g)) || "Champs invalide",
+        alphaNumReference: value => (value && value.match(/^(AN|AP|XX)\d{3}$/)) || "Champs invalide",
+        urlFormat: value => (value && value.match(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|bmp)$/i)) || "Champs invalide"
       },
       id:this.matId,
       nom:"",
