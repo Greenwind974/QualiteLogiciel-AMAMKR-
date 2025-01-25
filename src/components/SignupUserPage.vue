@@ -159,7 +159,7 @@ export default {
           firstName: this.formData.firstName,
           lastName: this.formData.lastName,
           department: this.formData.department,
-          firstConnection: this.firstConnection,
+          firstConnection: this.formData.firstConnection,
           role: this.formData.role,
         });
 
@@ -168,7 +168,7 @@ export default {
           firstName: this.formData.firstName,
           lastName: this.formData.lastName,
           department: this.formData.department,
-          firstConnection: this.firstConnection,
+          firstConnection: this.formData.firstConnection,
           role: this.formData.role,
         });
 
@@ -226,6 +226,7 @@ export default {
         email: "",
         department: "",
         password: "",
+        firstConnection: true,
         role: "USER",
       };
     },
