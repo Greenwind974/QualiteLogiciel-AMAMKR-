@@ -120,8 +120,7 @@ export default {
         required: value => !!value || 'Champs requis',
         counterNom: value => (value.length <= 30)||'Champs invalide',
         counterVersion: value => (value.length <= 15 && value.length>=3 )||'Champs invalide',
-
-
+        counterTelephone: value=> (value.length=10)||'Champs invalide'
 
       },
     }
