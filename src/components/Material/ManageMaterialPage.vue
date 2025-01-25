@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import {collection, query, addDoc, getDocs, doc, deleteDoc} from "firebase/firestore";
+import {collection, query, getDocs} from "firebase/firestore";
   import {db} from "@/firebase";
 import CreateMaterial from "@/components/Material/CreateMaterial.vue";
 import UpdateMaterial from "@/components/Material/UpdateMaterial.vue";
@@ -82,18 +82,6 @@ import DeleteMaterial from "@/components/Material/DeleteMaterial.vue";
 
     },
     methods:{
-      async createMaterial(){
-        const colMat = collection(db, "MATERIELS")
-        const dataObj={
-          nom:"ASUS Zenbook",
-          num_telephone:"",
-          photo:'https://www.accessoires-asus.com/images/articles/126495/276379967742.jpg',
-          reference:"AN321",
-          version:"V15",
-        }
-        const docRef = await addDoc(colMat, dataObj)
-        console.log('Doc id :', docRef.id)
-      },
       async readMaterials(){
         const querySnap=await getDocs(query(collection(db, "MATERIELS")))
         querySnap.forEach((mat)=>{
@@ -101,15 +89,13 @@ import DeleteMaterial from "@/components/Material/DeleteMaterial.vue";
         })
         console.log(this.materiels)
       },
-      async dropMaterial(){
-        await deleteDoc(doc(db, 'MATERIELS', 'VJwGVd962wipdRBMRMhD'))
-      }
+
 
     },
     created(){
-      //this.createMaterial()
+
       this.readMaterials()
-      //this.dropMaterial()
+
     }
   }
 

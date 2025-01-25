@@ -38,8 +38,9 @@
 
                 <v-col>
                   <v-row justify="space-around">
-                    <BookMaterial :mat-id=mat></BookMaterial>
+                    <BookMaterial :mat-id=mat ></BookMaterial>
                   </v-row>
+
 
                 </v-col>
               </v-layout>

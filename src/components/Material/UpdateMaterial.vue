@@ -68,7 +68,6 @@
                 label="Date de début d'emprunt"
                 v-model="dateDebut"
                 v-if="booked"
-                :rules="[rules.required]"
             ></v-text-field>
             <v-text-field
                 label="Date de fin d'emprunt"

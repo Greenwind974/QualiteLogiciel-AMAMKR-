@@ -5,7 +5,7 @@
 
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
-
+          :disabled="booked"
           rounded="lg"  size="regular"  color="accent"
           class="bouton2"
           append-icon="mdi-arrow-right"
@@ -44,28 +44,17 @@
       <v-container>
         <v-layout row>
           <v-date-picker
-              max="2018-03-20"
-              min="2016-06-15"
+              v-model="dateDebut"
+              min="today"
           ></v-date-picker>
           <v-spacer></v-spacer>
           <v-date-picker
-              max="2018-03-20"
-              min="2016-06-15"
+              v-model="dateFin"
+
+              min="today"
           ></v-date-picker>
         </v-layout>
       </v-container>
-            <v-container>
-
-              <v-card-text>
-                <v-select
-                    :items="['1 semaine', '2 semaines', '3 semaines', '4 semaines']"
-                    label="Durée de l'emprunt"
-                    required
-                ></v-select>
-              </v-card-text>
-
-            </v-container>
-
           <v-row>
             <v-container>
               <v-card-actions>
@@ -75,7 +64,7 @@
                     text="Réserver"
                     rounded="lg"  size="regular"  color="primary"
                     class=" bouton3"
-                    @click="dialog = false"
+                    @click="onSaveChanges"
                 ></v-btn>
                 <v-btn
                     text="Annuler"
@@ -94,7 +83,8 @@
 </template>
 
 <script>import {db} from "@/firebase";
-import { doc,updateDoc, getDoc} from "firebase/firestore";
+import {doc, updateDoc, getDoc} from "firebase/firestore";
+import {getAuth} from "firebase/auth";
 
 export default {
 
@@ -108,14 +98,15 @@ export default {
       rules: {
         required: value => !!value || 'Field is required',
       },
+      today:Date.now(),
       id:this.matId,
       nom:"",
       num_telephone: "",
       photo: "",
       reference: "",
       version: "",
-      dateDebut:"",
-      dateFin:"",
+      dateDebut: new Date,
+      dateFin:new Date,
       emprunteur:"",
       booked:false,
     }
@@ -133,8 +124,9 @@ export default {
           this.photo = docSnap.data().photo;
           this.reference = docSnap.data().reference;
           this.version = docSnap.data().version;
-          this.booked=docSnap.data().booked;
-          //console.log("Document trouvé :", docSnap.data());
+          this.booked = docSnap.data().booked;
+          this.today= Date.prototype.getDate();
+          console.log(this.today);
           return docSnap.data();
         } else {
 
@@ -148,28 +140,28 @@ export default {
 
     },
     async onSaveChanges() {
-      if (this.nom.trim() === '' || this.version.trim() === '' || this.reference.trim() === '') {
+      if (this.dateFin === '' || this.dateDebut === '') {
         console.log("no")
-      }
-      else{
-        await this.updateMaterial()
+      } else {
+        await this.reserveMaterial()
         this.dialog = false
       }
     },
 
-    async updateMaterial() {
+
+    async reserveMaterial() {
 
       try {
         const docRef = doc(db, "MATERIELS", this.matId);
         const docSnap = await getDoc(docRef);
+        this.emprunteur=getAuth().currentUser.email;
 
-        if (docSnap.exists()) {
+        if (docSnap.exists() && !docSnap.data().booked) {
           await updateDoc(docRef, {
-            reference: this.reference,
-            num_telephone: this.num_telephone,
-            photo: this.photo,
-            version: this.version,
-            nom: this.nom,
+            emprunteur: this.emprunteur,
+            dateDebut: this.dateDebut.toDateString(),
+            dateFin: this.dateFin.toDateString(),
+            booked: true,
           });
           console.log("Document trouvé :", docSnap.data());
           return docSnap.data();
@@ -181,7 +173,9 @@ export default {
         console.error("Erreur lors de la récupération du document :", error);
       }
 
-    }}}
+    },
+  }}
+
 
 
 </script>
