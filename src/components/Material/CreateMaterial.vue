@@ -44,9 +44,9 @@
           <v-text-field
               v-model="reference"
               label="Réference*"
-              hint="Réference du matériel (ex : AN159 pour android, AP951 pour apple...)"
+              hint="Réference du matériel (ex : AN159 pour android, AP951 pour apple, XX454 pour autre)"
               id="reference"
-              :rules="[rules.required]"
+              :rules="[rules.required, rules.alphaNumReference]"
               required
               max-width="75%"
               variant="outlined"
@@ -58,6 +58,7 @@
               label="Numéro"
               hint="Numéro de téléphone"
               id="tel"
+              :rules="[rules.counterTelephone, rules.onlyNumbers]"
               max-width="75%"
               variant="outlined"
 
@@ -116,9 +117,11 @@ export default {
       version: "",
       rules: {
         required: value => !!value || 'Champs requis',
-        counterNom: value => (value.length <= 30)||'Champs invalide',
-        counterVersion: value => (value.length <= 15 && value.length>=3 )||'Champs invalide',
-        counterTelephone: value=> (value.length=10)||'Champs invalide'
+        counterNom: value => (value.length <= 30) || 'Champs invalide',
+        counterVersion: value => (value.length <= 15 && value.length>=3 ) || 'Champs invalide',
+        counterTelephone: value => (value.length === 10) || 'Champs invalide',
+        onlyNumbers: value => (value && value.match(/[0-9]/g)) || "Champs invalide",
+        alphaNumReference: value => (value && value.match(/^(AN|AP|XX)\d{3}$/)) || "Champs invalide"
 
       },
     }
