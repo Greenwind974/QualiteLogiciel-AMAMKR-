@@ -4,11 +4,11 @@
     <v-spacer></v-spacer><v-spacer></v-spacer>
 
     <v-layout>
-      <v-col>
-        <h1>Bienvenue sur LocaMat</h1>
-        <h2>Outil de réservation de matériels informatiques </h2>
+      <v-col class="box home-box">
+        <h1 class="title">Bienvenue sur LocaMat</h1>
+        <h2 class="subtitle">Outil de réservation de matériels informatiques </h2>
         <v-btn rounded="lg"  size="regular"  color="accent"
-               class="bouton2"
+               class="button is-primary is-flex is-justify-content-center bouton2"
                append-icon="mdi-arrow-right"
                text="Réserver"
                to="/material"></v-btn>
@@ -43,9 +43,7 @@ export default {
 
 <style scoped>
 .bouton2{
-  padding:3px;
-margin-top:50px;
-  margin-left: 45%;
+  margin-top:50px;
 }
 h1{
   text-align: center;
@@ -54,5 +52,9 @@ h1{
 h2{
   text-align: center;
   font-size: larger;
+}
+.home-box{
+  margin: 3em;
+  padding: 5em;
 }
 </style>

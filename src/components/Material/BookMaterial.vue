@@ -1,13 +1,10 @@
-
-
 <template>
   <v-dialog persistent max-width="800px" v-model="dialog" scrollable   >
 
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
           :disabled="booked"
-          rounded="lg"  size="regular"  color="accent"
-          class="bouton2"
+          class="button is-primary"
           append-icon="mdi-arrow-right"
           text="Réserver"
           v-bind="activatorProps"
@@ -63,7 +60,7 @@
 
                     text="Réserver"
                     rounded="lg"  size="regular"  color="primary"
-                    class=" bouton3"
+                    class="bouton3"
                     @click="onSaveChanges"
                 ></v-btn>
                 <v-btn
@@ -188,7 +185,5 @@ export default {
 
 .bouton3{
   padding:3px;
-
-
 }
 </style>

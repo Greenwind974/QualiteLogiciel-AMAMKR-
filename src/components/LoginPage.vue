@@ -1,7 +1,7 @@
 <template>
-  <div class="columns is-centered is-vcentered" style="min-height: 100vh; background-color: #f9f9f9;">
+  <div class="columns is-centered is-vcentered layout">
     <div class="column is-narrow">
-      <div class="box" style="max-width: 450px; padding: 2rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+      <div class="box box-login-page">
         <section class="login-page">
           <h1 class="title has-text-centered">Bienvenue sur LocaMat !</h1>
           <form @submit.prevent="handleLogin">
@@ -35,10 +35,10 @@
               </div>
             </div>
           </form>
-          <div class="has-text-centered" style="margin-top: 2rem;">
+          <div class="has-text-centered box-partenariat">
             <p>En partenariat avec :</p>
             <img src="../assets/Web_UnivToursPolytechTours.png" alt="Université de Tours"
-                 style="max-width: 100%; height: auto;"/>
+              class="images-box-partenariat"/>
           </div>
           <p v-if="errorMessage" class="has-text-danger">{{ errorMessage }}</p>
         </section>
@@ -73,9 +73,26 @@ export default {
 </script>
 
 <style scoped>
+.layout{
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+}
+.box-login-page{
+  max-width: 450px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 .login-page {
   max-width: 400px;
   margin: 0 auto;
   padding: 2rem;
+}
+.box-partenariat{
+  margin-top: 2rem;
+}
+.images-box-partenariat{
+  max-width: 100%;
+  height: auto;
 }
 </style>

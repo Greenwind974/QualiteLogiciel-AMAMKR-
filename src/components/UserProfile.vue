@@ -1,54 +1,48 @@
 <template>
   <div class="user-profile" v-if="user">
-    <div class="sidebar">
-      <!-- Sidebar -->
-      <ul>
-        <li v-if="role === 'ADMIN'">
-          <a href="/manage-users">Gérer les utilisateurs</a>
-        </li>
-        <li v-if="role === 'USER' || role === 'ADMIN'">
-          <a href="/emprunts">Emprunts</a>
-        </li>
-        <li v-if="role === 'USER' || role === 'ADMIN'">
-          <a href="/retour">Retour</a>
-        </li>
-      </ul>
-    </div>
+
     <!-- Header Section -->
-    <div class="profile-header">
-      <div class="cover-photo"></div>
+    <div class="is-flex is-justify-content-center is-flex-direction-column">
+      <figure class="image is-128x128">
+        <img src="https://bulma.io/assets/images/placeholders/128x128.png" />
+      </figure>
       <div class="user-info">
-        <div class="text-info">
-          <h2>{{ user.FirstName }} {{ user.LastName }}</h2>
-          <p>Bonjour {{ user.FirstName }} !</p>
+        <div>
+          <h2 class="title has-text-centered">{{ user.FirstName }} {{ user.LastName }}</h2>
+          <p class="subtitle has-text-centered">Bonjour {{ user.FirstName }} !</p>
         </div>
       </div>
     </div>
 
     <!-- Profile Form -->
-    <div class="profile-form">
-      <h3>Informations personnelles</h3>
-      <form>
-        <div class="form-group">
-          <label for="firstName">Prénom</label>
-          <input id="firstName" type="text" v-model="user.FirstName" disabled />
+    <div class="columns is-centered is-vcentered">
+      <div class="column is-narrow">
+        <div class="box box-profile-page">
+          <div class="profile-page">
+            <h3 class="title has-text-centered">Informations personnelles</h3>
+            <form>
+              <div class="field form-group">
+                <label class="label" for="firstName">Prénom</label>
+                <input class="input" id="firstName" type="text" v-model="user.FirstName" disabled />
+              </div>
+              <div class="field form-group">
+                <label class="label" for="lastName">Nom</label>
+                <input class="input" id="lastName" type="text" v-model="user.LastName" disabled />
+              </div>
+              <div class="field form-group">
+                <label class="labe" for="email">Email</label>
+                <input class="input" id="email" type="email" v-model="user.Email" disabled />
+              </div>
+              <div class="field form-group">
+                <label class="label" for="department">Département</label>
+                <input class="input" id="department" type="text" v-model="user.Department" disabled />
+              </div>
+            </form>
+          </div>
+          <button @click="logout" class="button is-danger is-fullwidth mt-2 logout-button">Déconnexion</button>
         </div>
-        <div class="form-group">
-          <label for="lastName">Nom</label>
-          <input id="lastName" type="text" v-model="user.LastName" disabled />
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input id="email" type="email" v-model="user.Email" disabled />
-        </div>
-        <div class="form-group">
-          <label for="department">Département</label>
-          <input id="department" type="text" v-model="user.Department" disabled />
-        </div>
-      </form>
-
+      </div>
     </div>
-    <button @click="logout" class="logout-button">Déconnexion</button>
   </div>
 
   <div v-else>
@@ -103,12 +97,18 @@ html {
   padding: 0;
   font-family: Arial, sans-serif;
 }
+.box-profile-page{
+  max-width: 450px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.profile-page {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
 
 /* Header Section */
-.profile-header {
-  position: relative;
-  height: 300px;
-}
 
 .cover-photo {
   height: 200px;
@@ -116,12 +116,8 @@ html {
   background-size: cover;
 }
 
-.user-info {
-  position: absolute;
-  bottom: -50px;
-  left: 20px;
-  display: flex;
-  align-items: center;
+.user-info{
+  margin: 1em;
 }
 
 .text-info h2 {

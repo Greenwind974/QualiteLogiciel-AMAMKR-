@@ -3,7 +3,7 @@
 
 
     <!-- Main Content -->
-    <div class="main-content">
+    <div class=" box main-content">
       <div class="header">
         <h1>Gestion des utilisateurs</h1>
         <button class="button is-primary mt-2" @click="redirectToSignupUser">Créer un utilisateur</button>
@@ -26,6 +26,7 @@
             <td>{{ user.ID }}</td>
             <td>
               <input
+                  class="has-background has-text subtitle is-6"
                   type="text"
                   v-model="user.FirstName"
                   @change="updateUser(user.uid, 'FirstName', user.FirstName)"
@@ -33,6 +34,7 @@
             </td>
             <td>
               <input
+                  class="has-background has-text subtitle is-6"
                   type="text"
                   v-model="user.LastName"
                   @change="updateUser(user.uid, 'LastName', user.LastName)"
@@ -40,6 +42,7 @@
             </td>
             <td>
               <input
+                  class="has-background has-text subtitle is-6"
                   type="email"
                   v-model="user.Email"
                   @change="updateUser(user.uid, 'Email', user.Email)"
@@ -47,6 +50,7 @@
             </td>
             <td>
               <select
+                  class="has-background has-text subtitle is-6"
                   v-model="user.Department"
                   @change="updateUser(user.uid, 'Department', user.Department)">
                 <option value="Informatique">Informatique</option>
@@ -56,9 +60,9 @@
             </td>
             <td>
               <select
+                  class="has-background has-text subtitle is-6"
                   v-model="user.Role"
-                  @change="updateUser(user.uid, 'Role', user.Role)"
-              >
+                  @change="updateUser(user.uid, 'Role', user.Role)">
                 <option value="USER">Utilisateur</option>
                 <option value="ADMIN">Administrateur</option>
               </select>
