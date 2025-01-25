@@ -7,7 +7,6 @@
         <router-link class="title" :to='"/"'><v-app-bar-title >LocaMat</v-app-bar-title></router-link>
         <template v-slot:append>
           <v-btn icon="mdi-account-circle" :to='"/profile"'></v-btn>
-          <v-btn icon="mdi-logout"></v-btn>
         </template>
       </v-app-bar>
       <v-navigation-drawer
