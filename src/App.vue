@@ -4,7 +4,7 @@
       <v-app-bar
           color="primary"
       >
-        <router-link class="title" :to='"/"'><v-app-bar-title >LocaMat</v-app-bar-title></router-link>
+        <router-link class="title" :to='"/home"'><v-app-bar-title >LocaMat</v-app-bar-title></router-link>
         <template v-slot:append>
           <v-btn icon="mdi-account-circle" :to='"/profile"'></v-btn>
         </template>
