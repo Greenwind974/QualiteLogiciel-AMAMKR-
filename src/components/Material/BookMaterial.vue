@@ -1,7 +1,7 @@
 
 
 <template>
-  <v-dialog width="auto" v-model="dialog" scrollable>
+  <v-dialog persistent max-width="800px" v-model="dialog" scrollable   >
 
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
@@ -13,42 +13,59 @@
           v-bind="activatorProps"
       ></v-btn>
     </template>
-    <v-layout col>
+
     <v-card
         prepend-icon="mdi-bookmark"
         title="Réserver un matériel"
     >
       <v-divider></v-divider>
+      <v-container>
+        <v-layout row>
+          <v-container>
+            <v-img width="10em"
+                   contain
+                   :src="photo">
+            </v-img>
+          </v-container>
+          <v-container>
+            <v-card-title>{{nom}}</v-card-title>
+            <v-card-subtitle>version : {{version}}</v-card-subtitle>
+            <v-card-text>téléphone : {{num_telephone}}
+              <v-spacer></v-spacer>
+              référence : {{reference}}
 
-          <v-row>
-            <v-container>
-              <v-img width="10em"
-                     contain
-                     :src="photo">
-              </v-img>
-            </v-container>
-            <v-container>
-              <v-card-title>{{nom}}</v-card-title>
-              <v-card-subtitle>version : {{version}}</v-card-subtitle>
-              <v-card-text>téléphone : {{num_telephone}}
-                <v-spacer></v-spacer>
-                référence : {{reference}}
-                <v-spacer>
-                </v-spacer>
+            </v-card-text>
+          </v-container>
 
-                <!--<v-date-picker
-                    max="2018-03-20"
-                    min="2016-06-15"
-                ></v-date-picker>-->
+        </v-layout>
+      </v-container>
+      <v-divider></v-divider>
+
+      <v-container>
+        <v-layout row>
+          <v-date-picker
+              max="2018-03-20"
+              min="2016-06-15"
+          ></v-date-picker>
+          <v-spacer></v-spacer>
+          <v-date-picker
+              max="2018-03-20"
+              min="2016-06-15"
+          ></v-date-picker>
+        </v-layout>
+      </v-container>
+            <v-container>
+
+              <v-card-text>
+                <v-select
+                    :items="['1 semaine', '2 semaines', '3 semaines', '4 semaines']"
+                    label="Durée de l'emprunt"
+                    required
+                ></v-select>
               </v-card-text>
-              <v-select
-                  :items="['1 semaine', '2 semaines', '3 semaines', '4 semaines']"
-                  label="Durée de l'emprunt"
-                  required
-              ></v-select>
 
             </v-container>
-          </v-row>
+
           <v-row>
             <v-container>
               <v-card-actions>
@@ -70,7 +87,7 @@
             </v-container>
         </v-row>
     </v-card>
-      </v-layout>
+
 
 
   </v-dialog>

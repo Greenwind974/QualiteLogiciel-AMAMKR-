@@ -68,7 +68,7 @@
                 label="Date de début d'emprunt"
                 v-model="dateDebut"
                 v-if="booked"
-                required
+                :rules="[rules.required]"
             ></v-text-field>
             <v-text-field
                 label="Date de fin d'emprunt"
@@ -181,13 +181,26 @@ export default {
 
     },
     async onSaveChanges() {
-      if (this.nom.trim() === '' || this.version.trim() === '' || this.reference.trim() === '') {
-        console.log("no")
+      if (this.booked){
+        if (this.dateFin.trim() === '' || this.dateDebut.trim() === '' || this.emprunteur.trim() === ''||this.nom.trim() === '' || this.version.trim() === '' || this.reference.trim() === ''){
+          console.log("no")
+        }
+        else{
+          await this.updateMaterial()
+          this.dialog = false
+        }
       }
       else{
-        await this.updateMaterial()
-        this.dialog = false
+        if (this.nom.trim() === '' || this.version.trim() === '' || this.reference.trim() === '') {
+          console.log("no")
         }
+
+        else{
+          await this.updateMaterial()
+          this.dialog = false
+        }
+      }
+
     },
 
     async updateMaterial() {
