@@ -20,7 +20,7 @@
         >
           <v-layout row>
             <v-container>
-              <v-img width="10em"
+              <v-img max-width="10em"
                      contain
                      :src="this.materiels.get(mat).photo">
               </v-img>
@@ -89,12 +89,9 @@ export default {
 <style scoped>
 .carte{
   height:180px;
-  width:50%;
+  width:60%;
 }
-.bouton{
-  padding:3px;
-  margin-top:30px;
-}
+
 
 
 </style>
