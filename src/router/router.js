@@ -7,6 +7,7 @@ import UserProfile from "@/components/UserProfile.vue";
 import SignupUserPage from "@/components/SignupUserPage.vue";
 import HomePage from "@/components/HomePage.vue";
 import ManageUserPage from "@/components/ManageUserPage.vue";
+import ChangePassword from "@/components/ChangePassword.vue";
 
 // Routes et règles
 const routes = [
