@@ -69,6 +69,7 @@
               label="URL Photo"
               hint="URL de la photo du matériel"
               id="photo"
+              :rules="[rules.urlFormat]"
               max-width="75%"
               variant="outlined"
 
@@ -118,11 +119,11 @@ export default {
       rules: {
         required: value => !!value || 'Champs requis',
         counterNom: value => (value.length <= 30) || 'Champs invalide',
-        counterVersion: value => (value.length <= 15 && value.length>=3 ) || 'Champs invalide',
+        counterVersion: value => (value.length <= 15 && value.length>=3 && value.match(/^V/)) || 'Champs invalide',
         counterTelephone: value => (value.length === 10) || 'Champs invalide',
         onlyNumbers: value => (value && value.match(/[0-9]/g)) || "Champs invalide",
-        alphaNumReference: value => (value && value.match(/^(AN|AP|XX)\d{3}$/)) || "Champs invalide"
-
+        alphaNumReference: value => (value && value.match(/^(AN|AP|XX)\d{3}$/)) || "Champs invalide",
+        urlFormat: value => (value && value.match(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|bmp)$/i)) || "Champs invalide"
       },
     }
 
