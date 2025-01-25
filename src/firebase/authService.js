@@ -71,6 +71,7 @@ export const signUp = async (email, password, additionalData ) => {
         lastName: additionalData.lastName,
         email: email,
         department: additionalData.department,
+        firstConnection: additionalData.firstConnection
     });
 
     if (validationErrors) {
@@ -108,7 +109,7 @@ export const signInAndRedirect = async (email, password) => {
         if (userDoc.exists() && userDoc.data().FirstConnection) {
             console.log("First login")
             // Rediriger l'utilisateur vers une page pour changer son mot de passe
-            router.push("/change-password");
+            await router.push("/change-password");
             // Change boolean to false
             await updateDoc(userRef, {
                 FirstConnection: false

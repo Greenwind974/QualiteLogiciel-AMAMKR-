@@ -22,33 +22,33 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="user in users" :key="user.uid">
+          <tr v-for="(user, index) in users" :key="user.uid">
             <td>{{ user.ID }}</td>
             <td>
               <input
                   type="text"
                   v-model="user.FirstName"
-                  @change="updateUser(user.uid, 'FirstName', user.FirstName)"
+                  @change="updateUser(user.uid, 'FirstName', user.FirstName, index)"
               />
             </td>
             <td>
               <input
                   type="text"
                   v-model="user.LastName"
-                  @change="updateUser(user.uid, 'LastName', user.LastName)"
+                  @change="updateUser(user.uid, 'LastName', user.LastName, index)"
               />
             </td>
             <td>
               <input
                   type="email"
                   v-model="user.Email"
-                  @change="updateUser(user.uid, 'Email', user.Email)"
+                  @change="updateUser(user.uid, 'Email', user.Email, index)"
               />
             </td>
             <td>
               <select
                   v-model="user.Department"
-                  @change="updateUser(user.uid, 'Department', user.Department)">
+                  @change="updateUser(user.uid, 'Department', user.Department, index)">
                 <option value="Informatique">Informatique</option>
                 <option value="Mecanique">Mécanique</option>
                 <option value="Manutention">Manutention</option>
@@ -57,7 +57,7 @@
             <td>
               <select
                   v-model="user.Role"
-                  @change="updateUser(user.uid, 'Role', user.Role)"
+                  @change="updateUser(user.uid, 'Role', user.Role, index)"
               >
                 <option value="USER">Utilisateur</option>
                 <option value="ADMIN">Administrateur</option>
@@ -84,6 +84,13 @@ export default {
     return {
       users: [], // Liste des utilisateurs
       role: "USER", // Définir le rôle par défaut
+      nameError: null,
+      rules: {
+        email: (value) => {
+          const regex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+          return regex.test(value) || "Adresse email invalide.";
+        }
+      }
     };
   },
   methods: {
@@ -102,11 +109,23 @@ export default {
         console.error("Erreur lors de la récupération des utilisateurs :", error);
       }
     },
-    async updateUser(uid, field, value) {
+    async updateUser(uid, field, value, index) {
       try {
+        const firstName = this.users[index].FirstName;
+        const lastName = this.users[index].LastName;
+        const email = this.users[index].Email;
+        const regex = /^[A-Za-z]{1,30}$/;
         const userRef = doc(db, "UTILISATEURS", uid);
-        await updateDoc(userRef, { [field]: value });
-        alert("Utilisateur mis à jour avec succès !");
+        if (!this.rules.email(email)) {
+          alert("Le format du mail est incorrect");
+        } else if (firstName === '' || lastName === '' || email === '') {
+          alert("Le champ ne doit pas être vide");
+        } else if (!regex.test(firstName) || !regex.test(lastName)) {
+          alert("Le nom et le prénom ne doivent pas dépasser 30 caractères ni contenir de nombre ou caractères spéciaux.");
+        } else {
+          await updateDoc(userRef, { [field]: value });
+          alert("Utilisateur mis à jour avec succès !");
+        }
       } catch (error) {
         console.error("Erreur lors de la mise à jour de l'utilisateur :", error);
       }
