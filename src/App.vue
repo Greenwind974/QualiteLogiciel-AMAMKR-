@@ -66,10 +66,6 @@ export default {
     user(newUser) {
       if (newUser!=null) {
         this.nav=true;
-        console.log(this.user)
-      }
-      else{
-        console.log("no user")
       }
     },
 async created() {
