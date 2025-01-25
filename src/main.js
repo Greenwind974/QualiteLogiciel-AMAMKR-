@@ -14,6 +14,13 @@ import "@mdi/font/css/materialdesignicons.css"
 import { db, auth } from "./firebase.js";
 
 import router from "@/router/router";
+import UpdateMaterial from "@/components/Material/UpdateMaterial.vue";
+import CreateMaterial from "@/components/Material/CreateMaterial.vue";
+import DeleteMaterial from "@/components/Material/DeleteMaterial.vue";
+import BookMaterial from "@/components/Material/BookMaterial.vue";
+
+
+
 
 const app = createApp(App);
 
@@ -53,4 +60,11 @@ const vuetify = createVuetify({
 
 app.use(vuetify)
 
-app.mount("#app");
+
+
+app.component('UpdateMaterial',UpdateMaterial)
+app.component('CreateMaterial',CreateMaterial)
+app.component('DeleteMaterial', DeleteMaterial)
+app.component('BookMaterial',BookMaterial)
+
+app.mount('#app')

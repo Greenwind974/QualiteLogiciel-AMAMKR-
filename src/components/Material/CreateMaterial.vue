@@ -1,5 +1,3 @@
-
-
 <template>
   <v-dialog persistent max-width="500px" v-model="dialog">
 

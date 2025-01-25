@@ -1,31 +1,6 @@
 <template>
   <div>
-    <!-- Navbar -->
-    <nav class="navbar">
-      <div class="navbar-left">
-        <a href="/home">Accueil</a>
-        <a href="/settings">Paramètres</a>
-      </div>
-      <div class="navbar-right">
-        <a href="/profile">Profil</a>
-      </div>
-    </nav>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <h2>Menu</h2>
-      <ul>
-        <li v-if="role === 'ADMIN'">
-          <a href="/manage-users">Gérer les utilisateurs</a>
-        </li>
-        <li v-if="role === 'USER' || role === 'ADMIN'">
-          <a href="/emprunts">Emprunts</a>
-        </li>
-        <li v-if="role === 'USER' || role === 'ADMIN'">
-          <a href="/retour">Retour</a>
-        </li>
-      </ul>
-    </div>
 
     <!-- Main Content -->
     <div class="main-content">
@@ -168,69 +143,11 @@ html {
   font-family: Arial, sans-serif;
 }
 
-/* Navbar */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #0056b3;
-  color: white;
-  padding: 10px 20px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.navbar a {
-  color: white;
-  text-decoration: none;
-  margin-right: 15px;
-  font-weight: bold;
-}
-
-.navbar a:hover {
-  color: #ffc107;
-}
-
-/* Sidebar */
-.sidebar {
-  width: 250px;
-  height: calc(100vh - 60px);
-  background-color: #0056b3;
-  position: fixed;
-  top: 60px;
-  left: 0;
-  padding: 20px;
-  color: white;
-}
-
-.sidebar h2 {
-  margin-bottom: 20px;
-  color: #ffc107;
-}
-
-.sidebar ul li {
-  list-style: none;
-  margin-bottom: 15px;
-}
-
-.sidebar ul li a {
-  text-decoration: none;
-  color: white;
-  font-size: 16px;
-}
-
-.sidebar ul li a:hover {
-  color: #ffc107;
-}
 
 /* Main Content */
 .main-content {
-  margin-left: 270px;
-  margin-top: 70px;
+  margin:5%;
+width:75%;
   padding: 20px;
 }
 
