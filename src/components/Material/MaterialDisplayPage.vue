@@ -60,6 +60,7 @@ import {collection, query,  getDocs} from "firebase/firestore";
 import {db} from "@/firebase";
 
 import BookMaterial from "@/components/Material/BookMaterial.vue";
+import {nextTick} from "vue";
 
 
 export default {
@@ -78,8 +79,12 @@ export default {
     },
 
   },
-  created(){
+  created() {
     this.readMaterials()
+  },
+  async updated() {
+    await this.readMaterials()
+    await nextTick()
 
   }
 }

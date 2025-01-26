@@ -6,16 +6,6 @@
       <button @click="popup.show = false">Fermer</button>
     </div>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-      <div class="navbar-left">
-        <a href="/home">Accueil</a>
-        <a href="/settings">Paramètres</a>
-      </div>
-      <div class="navbar-right">
-        <a href="/profile">Profil</a>
-      </div>
-    </nav>
 
     <!-- Signup Form -->
     <div class="signup-user-page">
@@ -243,36 +233,7 @@ html {
   font-family: Arial, sans-serif;
 }
 
-/* Navbar Styles */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #0056b3;
-  color: white;
-  padding: 10px 20px;
-  height: 60px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
 
-.navbar-left,
-.navbar-right {
-  display: flex;
-}
-
-.navbar-left a,
-.navbar-right a {
-  text-decoration: none;
-  color: white;
-  margin-right: 20px;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.navbar-left a:hover,
-.navbar-right a:hover {
-  color: #ffc107;
-}
 
 /* Signup Form */
 .signup-user-page {

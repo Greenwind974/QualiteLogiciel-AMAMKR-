@@ -18,6 +18,8 @@ import UpdateMaterial from "@/components/Material/UpdateMaterial.vue";
 import CreateMaterial from "@/components/Material/CreateMaterial.vue";
 import DeleteMaterial from "@/components/Material/DeleteMaterial.vue";
 import BookMaterial from "@/components/Material/BookMaterial.vue";
+import MaterialDisplayPage from "@/components/Material/MaterialDisplayPage.vue";
+import ManageMaterialPage from "@/components/Material/ManageMaterialPage.vue";
 
 
 
@@ -61,7 +63,8 @@ const vuetify = createVuetify({
 app.use(vuetify)
 
 
-
+app.component('MaterialDisplayPage',MaterialDisplayPage)
+app.component('ManageMaterialPage',ManageMaterialPage)
 app.component('UpdateMaterial',UpdateMaterial)
 app.component('CreateMaterial',CreateMaterial)
 app.component('DeleteMaterial', DeleteMaterial)
