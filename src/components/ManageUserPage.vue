@@ -81,7 +81,7 @@ export default {
       nameError: null,
       rules: {
         email: (value) => {
-          const regex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+          const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           return regex.test(value) || "Adresse email invalide.";
         }
       }
@@ -123,7 +123,7 @@ export default {
         const email = this.users[index].Email;
         const regex = /^[A-Za-z]{1,30}$/;
         const userRef = doc(db, "UTILISATEURS", uid);
-        if (!this.rules.email(email)) {
+        if (this.rules.email(email) === "Adresse email invalide.") {
           alert("Le format du mail est incorrect");
         } else if (firstName === '' || lastName === '' || email === '') {
           alert("Le champ ne doit pas être vide");

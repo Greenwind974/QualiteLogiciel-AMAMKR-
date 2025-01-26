@@ -144,6 +144,7 @@ export default {
     },
     counterTelRule(value) {
       const result = this.rules.counterTelephone(value);
+      console.log(this.rules.counterTelephone(value));
       return result === true ? null : result;
     },
     onlyNumbersRule(value) {
@@ -179,23 +180,23 @@ export default {
         emprunteur:null,
       }
       // If field empty
-      if (this.requiredRule(this.nom) !== null || this.requiredRule(this.version) !== null || this.requiredRule(this.reference) !== null) {
+      if (this.requiredRule(this.nom) === "Champs requis" || this.requiredRule(this.version) === "Champs requis" || this.requiredRule(this.reference) === "Champs requis") {
         alert("Les champs requis ne doivent pas être vides.");
         this.allIsCorrect = false;
-      } else if (this.counterNomRule(this.nom) !== null) {
+      } else if (this.counterNomRule(this.nom) === "Champs invalide") {
         alert("Le nom est invalide.");
         this.allIsCorrect = false;
-      } else if (this.counterVersionRule(this.version) !== null) {
+      } else if (this.counterVersionRule(this.version) === "Champs invalide (ex: V3.0)") {
         console.log(this.counterVersionRule(this.version));
         alert("La version est invalide.");
         this.allIsCorrect = false;
-      } else if (this.alphaRefRule(this.reference) !== null ) {
+      } else if (this.alphaRefRule(this.reference) === "Champs invalide (ex : AN159 pour android, AP951 pour apple, XX454 pour autre)" ) {
         alert("La référence est invalide.");
         this.allIsCorrect = false;
-      } else if (this.counterTelRule(this.num_telephone) !== null && this.onlyNumbersRule(this.num_telephone) !== null) {
+      } else if (this.counterTelRule(this.num_telephone) === "Champs invalide" && this.onlyNumbersRule(this.num_telephone) === "Champs invalide") {
         alert("Le numéro de téléphone est invalide.");
         this.allIsCorrect = false;
-      } else if (this.urlFormatRule(this.photo) !== null) {
+      } else if (this.urlFormatRule(this.photo) === "Champs invalide") {
         alert("L'URL de la photo est invalide.");
         this.allIsCorrect = false;
       } else {
