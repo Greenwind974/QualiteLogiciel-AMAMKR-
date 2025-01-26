@@ -112,7 +112,7 @@ export default {
         required: value => !!value || 'Champs requis',
         counterNom: value => (value.length <= 30) || 'Champs invalide',
         counterVersion: value => (value.length <= 15 && value.length >= 3 && (/^V\d*(\.\d+)?$/).test(value)) || 'Champs invalide (ex: V3.0)',
-        counterTelephone: value => (value.length === 10) || 'Champs invalide',
+        counterTelephone: value => (value.length === 10 || value.length === 0) || 'Champs invalide',
         onlyNumbers: value => (value && (/[0-9]/g).test(value)) || "Champs invalide",
         alphaNumReference: value => (value && (/^(AN|AP|XX)\d{3}$/).test(value)) || "Champs invalide (ex : AN159 pour android, AP951 pour apple, XX454 pour autre)",
         urlFormat: value => (value && (/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|bmp)$/i).test(value)) || "Champs invalide"
