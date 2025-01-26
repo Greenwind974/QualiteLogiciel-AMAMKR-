@@ -118,30 +118,41 @@ export default {
     passwordsAreTheSame(newPassword, confirmPassword) {
       return newPassword === confirmPassword;
     },
+    fieldsEmpty(newPassword, confirmPassword) {
+      return newPassword === '' && confirmPassword === '';
+    },
     // Changes the password
     async changePassword() {
       try {
         // Get current user
         const auth = getAuth();
         const user = auth.currentUser;
-        // If the two password entries are the same
-        if (this.passwordsAreTheSame(this.formData.newPassword, this.formData.confirmPassword)) {
-          console.log("They're the same !");
+        const newPassword = this.formData.newPassword;
+        const confirmPassword = this.formData.confirmPassword;
+        // If the two password entries follow the Regex
+        if (this.passwordsAreTheSame(newPassword, confirmPassword) && !this.fieldsEmpty(newPassword, confirmPassword)
+        && this.errors.allError === null && this.errors.allError2 === null) {
           // Update password
           await updatePassword(user, this.formData.newPassword).then(() => {
             // Update successful
             alert ("Mot de passe modifié avec succès !");
-            // Redirect to home page
+            // Redirect to profile page
             this.$router.push("/profile");
           }).catch((error) => {
             console.error("Erreur lors de la modification du mot de passe:", error);
             alert("Une erreur est survenue. Veuillez réessayer plus tard.");
           });
         // If passwords are not the same
-        } else {
-          console.log("not the same....");
+        } else if (!this.passwordsAreTheSame(newPassword, confirmPassword)) {
           alert ("Veuillez entrer le même mot de passe.")
+        // If fields are empty
+        } else if (this.fieldsEmpty(newPassword, confirmPassword)) {
+          alert("Les champs ne doivent pas être vide.")
+        // If passwords don't follow the Regex
+        } else if (this.errors.allError !== null || this.errors.allError2 !== null) {
+          alert("Veuillez entrer un mot de passe valide.")
         }
+      // If a problem occur
       } catch (error) {
         console.error("Erreur lors de la modification du mot de passe:", error);
         alert("Une erreur est survenue. Veuillez réessayer plus tard.");

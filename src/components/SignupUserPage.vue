@@ -71,7 +71,7 @@ export default {
         email: "",
         department: "",
         password: "",
-        firstConnection: true,
+        firstLogin: true,
         role: "USER", // Rôle par défaut
       },
       // Règles de validation
@@ -149,7 +149,7 @@ export default {
           firstName: this.formData.firstName,
           lastName: this.formData.lastName,
           department: this.formData.department,
-          firstConnection: this.formData.firstConnection,
+          firstLogin: this.formData.firstLogin,
           role: this.formData.role,
         });
 
@@ -158,7 +158,7 @@ export default {
           firstName: this.formData.firstName,
           lastName: this.formData.lastName,
           department: this.formData.department,
-          firstConnection: this.formData.firstConnection,
+          firstLogin: this.formData.firstLogin,
           role: this.formData.role,
         });
 
@@ -216,7 +216,7 @@ export default {
         email: "",
         department: "",
         password: "",
-        firstConnection: true,
+        firstLogin: true,
         role: "USER",
       };
     },
