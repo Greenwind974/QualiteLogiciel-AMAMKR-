@@ -3,7 +3,7 @@
 
 
     <!-- Main Content -->
-    <div class="main-content">
+    <div class="box main-content">
       <div class="header">
         <h1>Gestion des utilisateurs</h1>
         <button v-if="role === 'ADMIN'" class="button is-primary mt-2" @click="redirectToSignupUser">Créer un utilisateur</button>
