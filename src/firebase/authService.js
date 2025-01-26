@@ -23,25 +23,13 @@ const validateUserData = (data) => {
     if (!emailRegex.test(data.email)) {
         errors.push("L'adresse email est invalide.");
     }
-    if (!nameRegex.test(data.department)) {
+    if (!nameRegex.test(data.matricule)) {
         errors.push("Le département doit être alphanumérique (1-30 caractères).");
     }
 
     return errors.length > 0 ? errors : null;
 };
 
-// Générateur de Matricule
-const generateUniqueId = async (department) => {
-    const departmentTrigrams = {
-        "Informatique": "INF",
-        "Mecanique": "MEC",
-        "Manutention": "MAN",
-    };
-
-    const trigram = departmentTrigrams[department] || "UNK"; // Juste au cas ou
-    const randomPart = Math.random().toString(36).substring(2, 6).toUpperCase(); // 4 nombre/lettres aléatoires
-    return `${trigram}${randomPart}`;
-};
 
 // Ajout ou mise à jour d'un utilisateur et de ces données
 export const addOrUpdateUser = async (uid, email, additionalData) => {
@@ -49,12 +37,10 @@ export const addOrUpdateUser = async (uid, email, additionalData) => {
     const userDoc = await getDoc(userRef);
 
     if (!userDoc.exists()) {
-        const uniqueId = await generateUniqueId(additionalData.department);
         await setDoc(userRef, {
-            ID : uniqueId,
             FirstName: additionalData.firstName || "Prénom inconnu",
             LastName: additionalData.lastName || "Nom inconnu",
-            Department: additionalData.department || "Non spécifié",
+            Matricule: additionalData.matricule || "Non spécifié",
             Email: email,
             Role: additionalData.role || "No role",
             createdAt: new Date().toISOString(),
@@ -70,7 +56,7 @@ export const signUp = async (email, password, additionalData ) => {
         firstName: additionalData.firstName,
         lastName: additionalData.lastName,
         email: email,
-        department: additionalData.department,
+        matricule: additionalData.matricule,
         firstLogin: additionalData.firstLogin
     });
 

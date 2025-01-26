@@ -21,8 +21,8 @@
                 <input class="input" id="email" type="email" v-model="user.Email" disabled />
               </div>
               <div class="field form-group">
-                <label class="label" for="department">Département</label>
-                <input class="input" id="department" type="text" v-model="user.Department" disabled />
+                <label class="label" for="matricule">Matricule</label>
+                <input class="input" id="matricule" type="text" v-model="user.Matricule" disabled />
               </div>
             </form>
           </div>

@@ -34,12 +34,9 @@
           <span v-if="!rules.alphaNumeric(formData.lastName)">Caractères alphanumériques uniquement.</span>
         </div>
         <div class="form-group">
-          <label for="department">Département :</label>
-          <select id="department" v-model="formData.department" required>
-            <option value="Informatique">Informatique</option>
-            <option value="Mecanique">Mécanique</option>
-            <option value="Manutention">Manutention</option>
-          </select>
+          <label for="matricule">Matricule :</label>
+          <input type="text" id="lastName" v-model="formData.matricule" :class="{ invalid: !rules.matricule(formData.matricule) }" required />
+          <span v-if="!rules.matricule(formData.matricule)">Caractères alphanumériques uniquement.</span>
         </div>
         <div class="form-group">
           <label for="role">Role :</label>
@@ -53,6 +50,8 @@
 
 <script>
 import { signUp, addOrUpdateUser } from "@/firebase/authService";
+import {auth, db} from "@/firebase";
+import {doc, getDoc} from "firebase/firestore";
 
 export default {
   data() {
@@ -69,7 +68,7 @@ export default {
         firstName: "",
         lastName: "",
         email: "",
-        department: "",
+        matricule: "",
         password: "",
         firstLogin: true,
         role: "USER", // Rôle par défaut
@@ -83,6 +82,10 @@ export default {
         alphaNumeric: (value) => {
           const regex = /^[a-zA-Z0-9\s]{1,30}$/;
           return regex.test(value) || "Caractères alphanumériques uniquement.";
+        },
+        matricule: (value) => {
+          const regex = /^[a-zA-Z0-9]{7}$/;
+          return regex.test(value) || "Le matricule doit contenir exactement 7 caractères alphanumériques.";
         },
         minLength: (min) => (value) =>
             (value && value.length >= min) || `Minimum ${min} caractères.`,
@@ -98,6 +101,20 @@ export default {
       },
       passwordError: null
     };
+  },
+  beforeCreate() {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const userDoc = await getDoc(doc(db, "UTILISATEURS", user.uid));
+        if (userDoc.exists() && userDoc.data().Role !== "ADMIN") {
+          alert("Accès refusé : Vous devez être ADMIN pour accéder à cette page.");
+          this.$router.push("/home");
+        }
+      } else {
+        alert("Veuillez vous connecter pour accéder à cette page.");
+        this.$router.push("/login");
+      }
+    });
   },
   methods: {
     minLengthRule() {
@@ -148,7 +165,7 @@ export default {
         const userCredential = await signUp(this.formData.email, this.formData.password, {
           firstName: this.formData.firstName,
           lastName: this.formData.lastName,
-          department: this.formData.department,
+          matricule: this.formData.matricule,
           firstLogin: this.formData.firstLogin,
           role: this.formData.role,
         });
@@ -157,7 +174,7 @@ export default {
         await addOrUpdateUser(uid, this.formData.email, {
           firstName: this.formData.firstName,
           lastName: this.formData.lastName,
-          department: this.formData.department,
+          matricule: this.formData.matricule,
           firstLogin: this.formData.firstLogin,
           role: this.formData.role,
         });
@@ -187,6 +204,9 @@ export default {
       if (!this.rules.email(this.formData.email)) {
         errors.push("Adresse email invalide.");
       }
+      if (!this.rules.matricule(this.formData.matricule)) {
+        errors.push("Le matricule doit contenir exactement 7 caractères alphanumériques.");
+      }
       if (!this.rules.minLength(8)(this.formData.password)) {
         errors.push("Le mot de passe doit contenir au moins 6 caractères.");
       }
@@ -214,7 +234,7 @@ export default {
         firstName: "",
         lastName: "",
         email: "",
-        department: "",
+        matricule: "",
         password: "",
         firstLogin: true,
         role: "USER",

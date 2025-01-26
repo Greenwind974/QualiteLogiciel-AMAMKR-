@@ -6,7 +6,7 @@
     <div class="main-content">
       <div class="header">
         <h1>Gestion des utilisateurs</h1>
-        <button class="button is-primary mt-2" @click="redirectToSignupUser">Créer un utilisateur</button>
+        <button v-if="role === 'ADMIN'" class="button is-primary mt-2" @click="redirectToSignupUser">Créer un utilisateur</button>
       </div>
       <div class="table-container">
         <table>
@@ -16,14 +16,13 @@
             <th>Prénom</th>
             <th>Nom</th>
             <th>Email</th>
-            <th>Département</th>
             <th>Rôle</th>
             <th>Actions</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="(user, index) in users" :key="user.uid">
-            <td>{{ user.ID }}</td>
+            <td>{{ user.Matricule }}</td>
             <td>
               <input
                   class="has-background has-text subtitle is-6"
@@ -51,16 +50,6 @@
             <td>
               <select
                   class="has-background has-text subtitle is-6"
-                  v-model="user.Department"
-                  @change="updateUser(user.uid, 'Department', user.Department, index)">
-                <option value="Informatique">Informatique</option>
-                <option value="Mecanique">Mécanique</option>
-                <option value="Manutention">Manutention</option>
-              </select>
-            </td>
-            <td>
-              <select
-                  class="has-background has-text subtitle is-6"
                   v-model="user.Role"
                   @change="updateUser(user.uid, 'Role', user.Role, index)"
               >
@@ -80,7 +69,7 @@
 </template>
 
 <script>
-import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import {collection, getDocs, doc, updateDoc, deleteDoc, getDoc} from "firebase/firestore";
 import { auth, db } from "@/firebase";
 import { deleteUser } from "firebase/auth";
 
@@ -112,6 +101,19 @@ export default {
         this.users = users;
       } catch (error) {
         console.error("Erreur lors de la récupération des utilisateurs :", error);
+      }
+    },
+    async fetchCurrentUserRole() {
+      try {
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+          const userDoc = await getDoc(doc(db, "UTILISATEURS", currentUser.uid));
+          if (userDoc.exists()) {
+            this.role = userDoc.data().Role;
+          }
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération du rôle de l'utilisateur :", error);
       }
     },
     async updateUser(uid, field, value, index) {
@@ -154,6 +156,7 @@ export default {
   },
   async mounted() {
     await this.fetchUsers();
+    await this.fetchCurrentUserRole();
   },
 };
 </script>
