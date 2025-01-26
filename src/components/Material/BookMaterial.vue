@@ -42,13 +42,14 @@
         <v-layout row>
           <v-date-picker
               v-model="dateDebut"
-              min="2025-01-25"
+              :min="new Date()"
           ></v-date-picker>
           <v-spacer></v-spacer>
           <v-date-picker
               v-model="dateFin"
+              :min="new Date()"
 
-              min="2025-01-25"
+
           ></v-date-picker>
         </v-layout>
       </v-container>
@@ -101,18 +102,22 @@ export default {
       photo: "",
       reference: "",
       version: "",
+
       dateDebut: new Date,
       dateFin:new Date,
       emprunteur:"",
       booked:false,
+      allIsCorrect: true
     }
 
   },
   methods: {
     async getMat() {
       try {
+
         const docRef = doc(db, "MATERIELS", this.matId);
         const docSnap = await getDoc(docRef);
+
 
         if (docSnap.exists()) {
           this.nom = docSnap.data().nom;
@@ -134,10 +139,8 @@ export default {
 
     },
     async onSaveChanges() {
-      if (this.dateFin === '' || this.dateDebut === '') {
-        console.log("no")
-      } else {
-        await this.reserveMaterial()
+      await this.reserveMaterial()
+      if(this.allIsCorrect) {
         this.dialog = false
       }
     },
@@ -150,18 +153,25 @@ export default {
         const docSnap = await getDoc(docRef);
         this.emprunteur=getAuth().currentUser.email;
 
-        if (docSnap.exists() && !docSnap.data().booked) {
-          await updateDoc(docRef, {
-            emprunteur: this.emprunteur,
-            dateDebut: this.dateDebut.toDateString(),
-            dateFin: this.dateFin.toDateString(),
-            booked: true,
-          });
-          console.log("Document trouvé :", docSnap.data());
-          return docSnap.data();
+        if (this.dateDebut.getDate() >= this.dateFin.getDate()) {
+          alert("La date de début d'emprunt ne doit pas être supérieure à celle de fin d'emprunt.");
+          this.allIsCorrect = false;
         } else {
-          console.log("Aucun document trouvé avec cet ID !");
-          return null
+          if (docSnap.exists() && !docSnap.data().booked) {
+            await updateDoc(docRef, {
+              emprunteur: this.emprunteur,
+              dateDebut: this.dateDebut.toDateString(),
+              dateFin: this.dateFin.toDateString(),
+              booked: true,
+            });
+            console.log("Document trouvé :", docSnap.data());
+            alert("Réservation enregistrée !");
+            this.allIsCorrect = true;
+            return docSnap.data();
+          } else {
+            console.log("Aucun document trouvé avec cet ID !");
+            return null;
+          }
         }
       } catch (error) {
         console.error("Erreur lors de la récupération du document :", error);
@@ -175,10 +185,6 @@ export default {
 </script>
 
 <style scoped>
-.bouton2{
-  padding:3px;
-  margin-top:20px;
-}
 
 .bouton3{
   padding:3px;
