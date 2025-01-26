@@ -42,13 +42,14 @@
         <v-layout row>
           <v-date-picker
               v-model="dateDebut"
-              min="2025-01-25"
+              :min="new Date()"
           ></v-date-picker>
           <v-spacer></v-spacer>
           <v-date-picker
               v-model="dateFin"
+              :min="new Date()"
 
-              min="2025-01-25"
+
           ></v-date-picker>
         </v-layout>
       </v-container>
@@ -101,6 +102,7 @@ export default {
       photo: "",
       reference: "",
       version: "",
+
       dateDebut: new Date,
       dateFin:new Date,
       emprunteur:"",
@@ -111,8 +113,10 @@ export default {
   methods: {
     async getMat() {
       try {
+
         const docRef = doc(db, "MATERIELS", this.matId);
         const docSnap = await getDoc(docRef);
+
 
         if (docSnap.exists()) {
           this.nom = docSnap.data().nom;
@@ -175,10 +179,6 @@ export default {
 </script>
 
 <style scoped>
-.bouton2{
-  padding:3px;
-  margin-top:20px;
-}
 
 .bouton3{
   padding:3px;
