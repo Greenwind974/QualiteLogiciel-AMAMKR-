@@ -97,7 +97,7 @@
 
 <script>
 import {db} from "@/firebase";
-import {doc, updateDoc, getDoc} from "firebase/firestore";
+import {doc, updateDoc, getDoc } from "firebase/firestore";
 
 export default {
 
@@ -109,13 +109,13 @@ export default {
     return{
       dialog:false,
       rules: {
-        required: value => !!value || 'Field is required',
+        required: value => !!value || 'Champs requis',
         counterNom: value => (value.length <= 30) || 'Champs invalide',
-        counterVersion: value => (value.length <= 15 && value.length>=3 && value.match(/^V/)) || 'Champs invalide',
+        counterVersion: value => (value.length <= 15 && value.length >= 3 && (/^V\d*(\.\d+)?$/).test(value)) || 'Champs invalide (ex: V3.0)',
         counterTelephone: value => (value.length === 10) || 'Champs invalide',
-        onlyNumbers: value => (value && value.match(/[0-9]/g)) || "Champs invalide",
-        alphaNumReference: value => (value && value.match(/^(AN|AP|XX)\d{3}$/)) || "Champs invalide",
-        urlFormat: value => (value && value.match(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|bmp)$/i)) || "Champs invalide"
+        onlyNumbers: value => (value && (/[0-9]/g).test(value)) || "Champs invalide",
+        alphaNumReference: value => (value && (/^(AN|AP|XX)\d{3}$/).test(value)) || "Champs invalide (ex : AN159 pour android, AP951 pour apple, XX454 pour autre)",
+        urlFormat: value => (value && (/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|bmp)$/i).test(value)) || "Champs invalide"
       },
       id:this.matId,
       nom:"",
@@ -125,10 +125,39 @@ export default {
       version: "",
       booked:false,
       noBooked:false,
+      allIsCorrect: true
     }
 
   },
   methods: {
+    requiredRule(value) {
+      const result = this.rules.required(value);
+      return result === true ? null : result;
+    },
+    counterNomRule(value) {
+      const result = this.rules.counterNom(value);
+      return result === true ? null : result;
+    },
+    counterVersionRule(value) {
+      const result = this.rules.counterVersion(value);
+      return result === true ? null : result;
+    },
+    counterTelRule(value) {
+      const result = this.rules.counterTelephone(value);
+      return result === true ? null : result;
+    },
+    onlyNumbersRule(value) {
+      const result = this.rules.onlyNumbers(value);
+      return result === true ? null : result;
+    },
+    alphaRefRule(value) {
+      const result = this.rules.alphaNumReference(value);
+      return result === true ? null : result;
+    },
+    urlFormatRule(value) {
+      const result = this.rules.urlFormat(value);
+      return result === true ? null : result;
+    },
     async getMat() {
       try {
         const docRef = doc(db, "MATERIELS", this.matId);
@@ -156,12 +185,8 @@ export default {
 
     },
     async onSaveChanges() {
-
-        if (this.nom.trim() === '' || this.version.trim() === '' || this.reference.trim() === ''){
-          console.log("no")
-        }
-        else{
-          await this.updateMaterial()
+        await this.updateMaterial()
+        if (this.allIsCorrect) {
           this.dialog = false
         }
       },
@@ -173,30 +198,79 @@ export default {
         this.booked=!this.noBooked;
 
         if (docSnap.exists() && this.booked) {
-          await updateDoc(docRef, {
-            reference: this.reference,
-            num_telephone: this.num_telephone,
-            photo: this.photo,
-            version: this.version,
-            nom: this.nom,
-          });
-          console.log("Document trouvé :", docSnap.data());
-          return docSnap.data();
+          if (this.requiredRule(this.nom) !== null || this.requiredRule(this.version) !== null || this.requiredRule(this.reference) !== null) {
+            alert("Les champs requis ne doivent pas être vides.");
+            this.allIsCorrect = false;
+          } else if (this.counterNomRule(this.nom) !== null) {
+            alert("Le nom est invalide.");
+            this.allIsCorrect = false;
+          } else if (this.counterVersionRule(this.version) !== null) {
+            console.log(this.counterVersionRule(this.version));
+            alert("La version est invalide.");
+            this.allIsCorrect = false;
+          } else if (this.alphaRefRule(this.reference) !== null ) {
+            alert("La référence est invalide.");
+            this.allIsCorrect = false;
+          } else if (this.counterTelRule(this.num_telephone) !== null || this.onlyNumbersRule(this.num_telephone) !== null) {
+            alert("Le numéro de téléphone est invalide.");
+            this.allIsCorrect = false;
+          } else if (this.urlFormatRule(this.photo) !== null) {
+            alert("L'URL de la photo est invalide.");
+            this.allIsCorrect = false;
+          } else {
+            await updateDoc(docRef, {
+              reference: this.reference,
+              num_telephone: this.num_telephone,
+              photo: this.photo,
+              version: this.version,
+              nom: this.nom,
+            });
+            console.log("Document trouvé :", docSnap.data());
+            alert("Matériel mis à jour avec succès !");
+            this.allIsCorrect = true;
+            return docSnap.data();
+          }
+
+
         }
         else if(docSnap.exists() && !this.booked){
-          await updateDoc(docRef, {
-            reference: this.reference,
-            num_telephone: this.num_telephone,
-            photo: this.photo,
-            version: this.version,
-            nom: this.nom,
-            booked:this.booked,
-            dateDebut:"",
-            dateFin:"",
-            emprunteur:"",
-          });
-          console.log("Document trouvé :", docSnap.data());
-          return docSnap.data();
+          if (this.requiredRule(this.nom) !== null || this.requiredRule(this.version) !== null || this.requiredRule(this.reference) !== null) {
+            alert("Les champs requis ne doivent pas être vides.");
+            this.allIsCorrect = false;
+          } else if (this.counterNomRule(this.nom) !== null) {
+            alert("Le nom est invalide.");
+            this.allIsCorrect = false;
+          } else if (this.counterVersionRule(this.version) !== null) {
+            console.log(this.counterVersionRule(this.version));
+            alert("La version est invalide.");
+            this.allIsCorrect = false;
+          } else if (this.alphaRefRule(this.reference) !== null ) {
+            alert("La référence est invalide.");
+            this.allIsCorrect = false;
+          } else if (this.counterTelRule(this.num_telephone) !== null || this.onlyNumbersRule(this.num_telephone) !== null) {
+            alert("Le numéro de téléphone est invalide.");
+            this.allIsCorrect = false;
+          } else if (this.urlFormatRule(this.photo) !== null) {
+            alert("L'URL de la photo est invalide.");
+            this.allIsCorrect = false;
+          } else {
+            await updateDoc(docRef, {
+              reference: this.reference,
+              num_telephone: this.num_telephone,
+              photo: this.photo,
+              version: this.version,
+              nom: this.nom,
+              booked:this.booked,
+              dateDebut:"",
+              dateFin:"",
+              emprunteur:"",
+            });
+            console.log("Document trouvé :", docSnap.data());
+            alert("Matériel créé avec succès !");
+            this.allIsCorrect = true;
+            return docSnap.data();
+          }
+
 
         }
         else {
