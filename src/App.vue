@@ -24,10 +24,10 @@
           </v-list-item>
           <v-divider></v-divider>
 
-            <v-list-item prepend-icon="mdi-folder" title="Matériels" value="materiels" to="/material" :disabled="nav"></v-list-item>
+            <v-list-item prepend-icon="mdi-folder" title="Voir les Matériels" value="materiels" to="/material" :disabled="nav"></v-list-item>
             <v-list-item prepend-icon="mdi-folder-edit" title="Gérer les Matériels" value="manage-materiels" to="/manage-materials" :disabled="nav" ></v-list-item>
             <v-list-item prepend-icon="mdi-account-multiple" title="Gérer les Utilisateurs" value="manage-users"  to="/manage-users" :disabled="nav" ></v-list-item>
-            <v-list-item prepend-icon="mdi-bookmark-multiple" title="Reservations" value="reservations" to="/reservations" :disabled="nav"></v-list-item>
+            <v-list-item prepend-icon="mdi-bookmark-multiple" title="Mes Réservations" value="reservations" to="/reservations" :disabled="nav"></v-list-item>
 
         </v-list>
       </v-navigation-drawer>

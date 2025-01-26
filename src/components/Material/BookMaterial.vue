@@ -42,11 +42,17 @@
       <v-container>
         <v-layout row>
           <v-date-picker
+              color="secondary"
+              border="sm"
+              title="Date de début de réservation"
               v-model="dateDebut"
               :min="new Date()"
           ></v-date-picker>
           <v-spacer></v-spacer>
           <v-date-picker
+              color="secondary"
+              border="sm"
+              title="Date de fin de réservation"
               v-model="dateFin"
               :min="new Date()"
 
