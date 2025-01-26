@@ -112,10 +112,10 @@ export default {
         required: value => !!value || 'Champs requis',
         counterNom: value => (value.length <= 30) || 'Champs invalide',
         counterVersion: value => (value.length <= 15 && value.length >= 3 && (/^V\d*(\.\d+)?$/).test(value)) || 'Champs invalide (ex: V3.0)',
-        counterTelephone: value => (value.length === 10 || value.length === 0) || 'Champs invalide',
-        onlyNumbers: value => (value && (/[0-9]/g).test(value)) || "Champs invalide",
+        counterTelephone: value => (value.length === 10 || value === '') || 'Champs invalide',
+        onlyNumbers: value => ((value && (/[0-9]/g).test(value)) || value === '') || "Champs invalide",
         alphaNumReference: value => (value && (/^(AN|AP|XX)\d{3}$/).test(value)) || "Champs invalide (ex : AN159 pour android, AP951 pour apple, XX454 pour autre)",
-        urlFormat: value => (value && (/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|bmp)$/i).test(value)) || "Champs invalide"
+        urlFormat: value => ((value && (/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|bmp)$/i).test(value)) || value === '') || "Champs invalide"
       },
       id:this.matId,
       nom:"",
@@ -144,6 +144,7 @@ export default {
     },
     counterTelRule(value) {
       const result = this.rules.counterTelephone(value);
+      console.log(this.rules.counterTelephone(value));
       return result === true ? null : result;
     },
     onlyNumbersRule(value) {
@@ -212,7 +213,7 @@ export default {
           } else if (this.alphaRefRule(this.reference) !== null ) {
             alert("La référence est invalide.");
             this.allIsCorrect = false;
-          } else if (this.counterTelRule(this.num_telephone) !== null || this.onlyNumbersRule(this.num_telephone) !== null) {
+          } else if (this.counterTelRule(this.num_telephone) !== null && this.onlyNumbersRule(this.num_telephone) !== null) {
             alert("Le numéro de téléphone est invalide.");
             this.allIsCorrect = false;
           } else if (this.urlFormatRule(this.photo) !== null) {
