@@ -42,13 +42,13 @@
         <v-layout row>
           <v-date-picker
               v-model="dateDebut"
-              min="today"
+              min="2025-01-25"
           ></v-date-picker>
           <v-spacer></v-spacer>
           <v-date-picker
               v-model="dateFin"
 
-              min="today"
+              min="2025-01-25"
           ></v-date-picker>
         </v-layout>
       </v-container>
@@ -95,7 +95,6 @@ export default {
       rules: {
         required: value => !!value || 'Field is required',
       },
-      today:Date.now(),
       id:this.matId,
       nom:"",
       num_telephone: "",
@@ -122,8 +121,6 @@ export default {
           this.reference = docSnap.data().reference;
           this.version = docSnap.data().version;
           this.booked = docSnap.data().booked;
-          this.today= Date.prototype.getDate();
-          console.log(this.today);
           return docSnap.data();
         } else {
 

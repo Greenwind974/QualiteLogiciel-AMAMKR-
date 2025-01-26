@@ -1,19 +1,6 @@
 <template>
   <div class="user-profile" v-if="user">
 
-    <!-- Header Section -->
-    <div class="is-flex is-justify-content-center is-flex-direction-column">
-      <figure class="image is-128x128">
-        <img src="https://bulma.io/assets/images/placeholders/128x128.png" />
-      </figure>
-      <div class="user-info">
-        <div>
-          <h2 class="title has-text-centered">{{ user.FirstName }} {{ user.LastName }}</h2>
-          <p class="subtitle has-text-centered">Bonjour {{ user.FirstName }} !</p>
-        </div>
-      </div>
-    </div>
-
     <!-- Profile Form -->
     <div class="columns is-centered is-vcentered">
       <div class="column is-narrow">
@@ -108,13 +95,7 @@ html {
   padding: 2rem;
 }
 
-/* Header Section */
 
-.cover-photo {
-  height: 200px;
-  background: url("https://via.placeholder.com/1440x341") no-repeat center center;
-  background-size: cover;
-}
 
 .user-info{
   margin: 1em;
@@ -183,35 +164,4 @@ html {
   background-color: #c9302c;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 250px;
-  height: calc(100vh - 60px);
-  background-color: #0056b3;
-  position: fixed;
-  top: 0;
-  left: 0;
-  padding: 20px;
-  color: white;
-}
-
-.sidebar h2 {
-  margin-bottom: 20px;
-  color: #ffc107;
-}
-
-.sidebar ul li {
-  list-style: none;
-  margin-bottom: 15px;
-}
-
-.sidebar ul li a {
-  text-decoration: none;
-  color: white;
-  font-size: 16px;
-}
-
-.sidebar ul li a:hover {
-  color: #ffc107;
-}
 </style>
