@@ -1,14 +1,5 @@
 <template >
-  <v-container >
-    <v-layout col>
-
-      <v-col>
-        filter
-      </v-col>
-    </v-layout>
-  </v-container>
-
-  <v-divider></v-divider>
+  <h1>Faire une réservation</h1>
   <v-container >
     <v-layout row wrap class="mb-2"
               v-for="mat in materiels.keys()"
@@ -60,7 +51,6 @@ import {collection, query,  getDocs} from "firebase/firestore";
 import {db} from "@/firebase";
 
 import BookMaterial from "@/components/Material/BookMaterial.vue";
-import {nextTick} from "vue";
 
 
 export default {
@@ -82,11 +72,7 @@ export default {
   created() {
     this.readMaterials()
   },
-  async updated() {
-    await this.readMaterials()
-    await nextTick()
 
-  }
 }
 
 </script>
@@ -97,6 +83,11 @@ export default {
   width:60%;
 }
 
+h1{
+  text-align: center;
+  font-size: xxx-large;
+  color:white;
+}
 
 
 </style>

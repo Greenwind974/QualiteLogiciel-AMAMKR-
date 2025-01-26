@@ -162,6 +162,7 @@ export default {
       await this.createMat();
       if (this.allIsCorrect) {
         this.dialog=false;
+        location.reload();
       }
     },
     async createMat() {

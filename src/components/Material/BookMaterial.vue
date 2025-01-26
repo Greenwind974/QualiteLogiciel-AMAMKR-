@@ -8,6 +8,7 @@
           append-icon="mdi-arrow-right"
           text="Réserver"
           v-bind="activatorProps"
+          
       ></v-btn>
     </template>
 
@@ -142,6 +143,7 @@ export default {
       await this.reserveMaterial()
       if(this.allIsCorrect) {
         this.dialog = false
+        location.reload();
       }
     },
 

@@ -188,6 +188,7 @@ export default {
         await this.updateMaterial()
         if (this.allIsCorrect) {
           this.dialog = false
+          location.reload();
         }
       },
 

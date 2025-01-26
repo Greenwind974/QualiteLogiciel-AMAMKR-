@@ -1,17 +1,12 @@
 <template >
-  <v-container >
-    <v-layout col>
+<h1>Gérer les réservations</h1>
 
-      <v-col>
-        filter
-      </v-col>
+  <v-container >
       <v-col>
         <template v-if="true"><CreateMaterial></CreateMaterial></template>
       </v-col>
-    </v-layout>
   </v-container>
 
-  <v-divider></v-divider>
   <v-container >
       <v-layout row wrap class="mb-2"
                 v-for="mat in materiels.keys()"
@@ -95,14 +90,12 @@ import DeleteMaterial from "@/components/Material/DeleteMaterial.vue";
 
 
     },
-    created(){
+    async created(){
 
-      this.readMaterials()
+      await this.readMaterials()
 
     },
-    updated() {
-      this.readMaterials()
-    }
+
   }
 
 
@@ -115,6 +108,10 @@ import DeleteMaterial from "@/components/Material/DeleteMaterial.vue";
   width:50%;
 }
 
-
+h1{
+  text-align: center;
+  font-size: xxx-large;
+  color:white;
+}
 
 </style>

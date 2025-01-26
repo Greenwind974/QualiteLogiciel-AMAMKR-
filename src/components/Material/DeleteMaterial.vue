@@ -109,6 +109,7 @@ export default {
     async onSaveChanges() {
         await this.deleteMaterial()
         this.dialog = false
+      location.reload();
 
     },
 
